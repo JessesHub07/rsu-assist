@@ -1,0 +1,9 @@
+flask
+anthropic
+sentence-transformers
+pdfplumber
+numpy
+python-dotenv
+authlib
+requests
+gunicorn

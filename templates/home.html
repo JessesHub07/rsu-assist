@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Home - RSU Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    {% include "_sidebar.html" %}
+
+    <div class="chat-app">
+      <header class="chat-header">
+        <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+        <div class="avatar">RSU</div>
+        <div class="header-text">
+          <div class="title">Home</div>
+          <div class="subtitle" id="headerSubtitle">Rivers State University</div>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button">Dark Mode</button>
+      </header>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="home-body">
+        <div class="home-greeting">
+          <h1 id="homeGreeting">Welcome</h1>
+          <p id="homeSubtext">Here's what's going on with your account.</p>
+        </div>
+
+        <div class="home-stats" id="homeStats">
+          <div class="home-stat">
+            <div class="home-stat-value" id="statConversations">0</div>
+            <div class="home-stat-label">Conversations</div>
+          </div>
+          <div class="home-stat">
+            <div class="home-stat-value" id="statDocuments">0</div>
+            <div class="home-stat-label">Documents uploaded</div>
+          </div>
+          <div class="home-stat" id="statLevelCard" hidden>
+            <div class="home-stat-value" id="statLevel">-</div>
+            <div class="home-stat-label">Current level</div>
+          </div>
+        </div>
+
+        <div class="home-actions">
+          <a href="/chat-ui" class="home-action-card">
+            <div class="home-action-title">Start a new chat</div>
+            <div class="home-action-desc">Ask RSU Assist anything about the department.</div>
+          </a>
+          <a href="/faqs-ui" class="home-action-card">
+            <div class="home-action-title">Browse FAQs</div>
+            <div class="home-action-desc">Common questions, organized by category.</div>
+          </a>
+          <a href="/documents-ui" class="home-action-card">
+            <div class="home-action-title">Upload a document</div>
+            <div class="home-action-desc">Teach the assistant from your own notes.</div>
+          </a>
+        </div>
+
+        <div class="home-recent">
+          <h2>Recent conversations</h2>
+          <div class="home-recent-list" id="homeRecentList"></div>
+          <p class="home-recent-empty" id="homeRecentEmpty" hidden>No conversations yet. Start one above.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='home.js') }}"></script>
+</body>
+</html>

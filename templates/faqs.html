@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>FAQs - RSU Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='faqs.css') }}">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    {% include "_sidebar.html" %}
+
+    <div class="chat-app">
+      <header class="chat-header">
+        <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+        <div class="avatar">RSU</div>
+        <div class="header-text">
+          <div class="title">Frequently Asked Questions</div>
+          <div class="subtitle" id="headerSubtitle">Rivers State University</div>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button">Dark Mode</button>
+      </header>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="faqs-body">
+        <div class="faqs-search-row">
+          <input id="faqSearch" type="text" placeholder="Search FAQs..." autocomplete="off">
+        </div>
+
+        <div class="faqs-pills" id="faqCategoryPills"></div>
+
+        <div class="faqs-list" id="faqList"></div>
+
+        <p class="faqs-empty" id="faqEmpty" hidden>No questions match your search.</p>
+
+        <div class="faqs-fallback">
+          <p>Didn't find what you needed?</p>
+          <button type="button" class="faqs-ask-btn" id="faqAskBtn">Ask in chat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='faqs.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+#,query,expected_category,top_retrieved_tag,similarity_score,retrieval_correct,response_time_s,reply
+1,When does the new semester begin?,academic_calendar,academic_calendar,0.604,True,12.33,"Thanks for reaching out! 😊
+
+Unfortunately, I don't have the verified academic calendar dates available right now to give you an accurate answer on when the new semester begins.
+
+I'd recommend:
+
+- **Checking the RSU official website** for the latest academic calendar
+- **Visiting or contacting the Academic Affairs office** directly
+- **Checking your student portal** — it may have the current session's calendar uploaded there
+
+I want to make sure you get the correct dates rather than a guess! Is there anything else I can help you with?"
+2,what date does skul resume,academic_calendar,academic_calendar,0.455,True,5.94,"Hey! 👋
+
+I currently don't have the verified resumption date available — that information hasn't been updated in my system yet.
+
+Here's what I'd suggest:
+
+- **Check the official RSU website** for the latest academic calendar
+- **Contact the Academic Affairs office** directly for confirmed dates
+- **Follow RSU's official social media pages** — they usually announce resumption dates there too
+
+Sorry I couldn't give you a direct answer! Once the calendar is updated, I'll be able to help with that. 😊"
+3,Is there a break before exams start?,academic_calendar,examination_schedule,0.396,False,5.58,"That's a good question, but I don't have the specific details about a pre-examination break period in my current information.
+
+I'd suggest reaching out to the **Student Affairs office** or checking with your **faculty/department** directly — they'll have the accurate academic calendar details including any study breaks scheduled before exams. 📅"
+4,when's resumption for 200 level,academic_calendar,academic_calendar,0.45,True,6.36,"Hey! Unfortunately, I don't have the verified resumption dates available right now — the academic calendar details are yet to be updated in my system.
+
+For the most accurate information, I'd suggest:
+
+- **Checking the RSU official website** for the current session's academic calendar
+- **Visiting or contacting the Academic Affairs office** directly
+- **Checking your faculty notice board** as faculties sometimes post updates there too
+
+Sorry I couldn't give you a direct answer! 😊"
+5,Can you tell me the academic calendar for this session?,academic_calendar,academic_calendar,0.694,True,6.32,"Hey! I'd love to help with that, but unfortunately I don't have the verified academic calendar details for the current session available right now.
+
+I'd suggest checking with:
+
+- **The RSU official website** for the latest published calendar
+- **The Academic Affairs office** — they'll have the most up-to-date session dates
+- **Your faculty/department notice board** as dates are sometimes communicated there too
+
+Sorry I couldn't give you a direct answer on this one! 😊"
+6,wen does d semester end,academic_calendar,academic_calendar,0.445,True,6.3,"Hey! 👋
+
+I don't have the exact semester end date available right now — the academic calendar details in my system are currently being updated with verified dates.
+
+I'd suggest checking with:
+
+- 📌 **The Academic Affairs office** for the official calendar
+- 🌐 **RSU's official website** (www.rsu.edu.ng)
+- 📋 **Your faculty/department notice board**
+
+They'll have the most accurate and up-to-date info! 😊"
+7,Are lectures starting this week or next?,academic_calendar,academic_calendar,0.472,True,6.72,"That's a great question! Unfortunately, I don't have the verified dates for the current academic calendar loaded in my system right now, so I can't confirm whether lectures are starting this week or next.
+
+I'd suggest:
+- **Checking the RSU official website** for the current academic calendar
+- **Visiting or calling the Academic Affairs office** — they'll have the exact dates
+- **Checking your faculty/department notice board** as departments sometimes post resumption updates there too
+
+Sorry I couldn't give you a straight answer on this one! 😊"
+8,what's the schedule for the first semester,academic_calendar,academic_calendar,0.524,True,7.57,"Hey! 👋
+
+I currently don't have the verified academic calendar details loaded in my system — the schedule information hasn't been filled in yet.
+
+For the accurate **first semester schedule**, I'd recommend:
+
+- 📌 **Checking the RSU official website** for the current session's academic calendar
+- 🏢 **Visiting the Academic Affairs office** — they'll have the most up-to-date information
+- 📲 **Your faculty/department notice board** often posts session schedules too
+
+Sorry I couldn't give you the exact dates right now! Is there anything else I can help you with?"
+9,How do I register my courses this semester?,course_registration,course_registration,0.611,True,7.18,"Hey! Great question. 😊
+
+Unfortunately, the course registration details haven't been fully set up in my system yet — the procedure and deadline information is still being verified.
+
+For the most accurate and up-to-date steps on how to register your courses this semester, I'd recommend reaching out to the **ICT Unit** directly, as they handle the registration portal and process.
+
+You can also check:
+- The **RSU official website** for any posted guidelines
+- Your **department's notice board or admin office** for semester-specific instructions
+
+Sorry I couldn't give you a step-by-step right now! Is there anything else I can help you with?"
+10,wen is d last day to register courses,course_registration,course_registration,0.508,True,6.24,"Hey! 👋
+
+I actually don't have the verified registration deadline details available right now — that information hasn't been confirmed in my knowledge base yet.
+
+I'd recommend reaching out to the **ICT Unit** directly, as they handle course registration procedures and deadlines. You can also check with your **faculty officer** or the **student portal** for the most up-to-date info.
+
+Don't wait too long though — registration deadlines can sneak up fast! 😄"
+11,What is the process for adding a course after registration closes?,course_registration,course_registration,0.572,True,6.86,"Thanks for reaching out! Unfortunately, I don't have the verified details on the course addition process after registration closes — that information hasn't been confirmed yet in our system.
+
+I'd recommend reaching out directly to:
+
+- **The ICT Unit** – for the portal-side process
+- **Your Faculty/Departmental Officer** – they often handle late addition requests and can guide you on any forms or approvals needed
+- **The Academic Affairs office** – for official policy on late registration
+
+They'll give you the most accurate and up-to-date steps. Sorry I couldn't be more specific! 😊"
+12,how do i register for csc courses,course_registration,course_registration,0.576,True,5.99,"Hey! So the course registration information I have right now is still being updated with the verified details from the ICT unit.
+
+For the most accurate and up-to-date registration procedure and deadlines, I'd recommend reaching out to the **ICT Unit** directly — they'll be able to walk you through the exact steps for registering your CSC courses.
+
+You could also check with your **Department (Computer Science)** or the **Student Affairs office** if you need further guidance. 😊"
+13,Can I still register if I missed the deadline?,course_registration,course_registration,0.47,True,7.12,"That's a great question, but I honestly don't have verified details about the course registration deadline or late registration procedures right now — the information in our system is still being updated.
+
+I'd recommend reaching out directly to:
+
+- **The ICT Unit** – for portal access and registration technical issues
+- **Your Faculty/Departmental Officer** – for guidance on late registration and any penalties that may apply
+
+They'll be able to give you the most accurate and up-to-date answer. Don't wait too long though — the sooner you sort it out, the better! 😊"
+14,wat do i need to complete course registration,course_registration,course_registration,0.526,True,5.78,"Hey! Great question. 😊
+
+Unfortunately, the detailed course registration procedure hasn't been loaded into my system yet — the information is currently being verified.
+
+I'd recommend reaching out to the **ICT Unit** directly for the accurate steps and any deadlines. They'll be able to walk you through exactly what you need to complete your registration.
+
+You can also check with your **Faculty Officer** or the **Student Affairs office** — they're usually helpful with this kind of thing too!"
+15,Is course registration done online or in person?,course_registration,course_registration,0.559,True,6.75,"Great question! Unfortunately, I don't have the verified details on the course registration procedure just yet — that information is still being confirmed with the ICT unit.
+
+For the most accurate answer on whether registration is done online, in person, or both, I'd recommend reaching out to:
+
+- **The ICT Unit** – for the online portal/system details
+- **Your Faculty's Examination Officer** – for faculty-specific guidance
+- **Student Affairs Office** – for general registration support
+
+They'll be able to give you the correct procedure and any upcoming deadlines. Sorry I couldn't be more specific right now! 😊"
+16,i havent registered yet wat should i do,course_registration,course_registration,0.341,True,7.56,"Hey! So the course registration details in my system haven't been fully updated yet, so I don't want to give you any wrong steps or deadlines.
+
+**Your best bet right now:**
+
+- 📞 **Contact the ICT Unit** directly — they handle the registration portal and can walk you through the process
+- 🏢 You can also check in with the **Student Affairs office** if you're not sure where to start
+
+Don't wait too long though, since registration deadlines can affect your ability to sit for exams! Head over to one of those offices as soon as you can. 👍"
+17,registration process pls,course_registration,course_registration,0.524,True,6.64,"Hey! 👋
+
+I currently don't have the verified details for the course registration process — that information hasn't been updated in my knowledge base yet.
+
+Here's what I'd suggest:
+
+- **Contact the ICT Unit** directly, as they manage the registration portal and can walk you through the steps and deadlines.
+- You can also check with your **Faculty Officer** or the **Student Affairs Office** for guidance.
+
+Sorry I couldn't be more specific right now! Once the verified info is available, I'll be able to give you the full step-by-step process. 😊"
+18,How do I pay my school fees?,fee_payment,fee_payment,0.765,True,6.82,"Hey! I'm sorry, I don't have the verified fee payment details available right now — the information in our system is still being updated.
+
+For accurate details on **how to pay, payment channels, amounts, and deadlines**, I'd recommend reaching out to the **RSU Bursary** directly. They'll have everything you need! 😊
+
+You can also check the official RSU website or visit the Bursary office on campus for the most up-to-date payment information."
+19,wen is d fee payment deadline,fee_payment,fee_payment,0.501,True,6.41,"Hey! 👋
+
+I don't have the verified fee payment deadline details available right now — that information hasn't been confirmed in my system yet.
+
+For the accurate deadline, I'd suggest:
+
+- **Visiting the Bursary directly** — they're your best bet for confirmed dates
+- **Checking the RSU official website or notice boards** for any announcements
+- **Contacting the Bursary office** for payment deadlines, amounts, and channels
+
+Don't wait too long though — fee deadlines can sneak up fast! 😅"
+20,What happens if I pay my fees late?,fee_payment,fee_payment,0.491,True,7.24,"That's a good question to be thinking about! Unfortunately, I don't have verified details on the late fee payment policy right now — that information needs to come directly from the Bursary.
+
+I'd recommend reaching out to the **RSU Bursary** to ask about:
+- Any **penalties or surcharges** for late payment
+- Whether there are **grace periods**
+- If late payment affects your **registration or exam eligibility**
+
+It's best to get this straight from them so you have accurate information. Don't wait too long though — paying on time is always the safer option! 😊"
+21,how much are skool fees this session,fee_payment,fee_payment,0.373,True,6.52,"Hey! 👋
+
+I don't have the verified fee amounts for this session available right now — that information hasn't been updated in my knowledge base yet.
+
+For accurate figures, I'd recommend:
+
+- **Visiting the Bursary directly** — they're the official source for all fee-related info
+- **Checking the RSU official website** for any published fee schedules
+- **Contacting the Bursary office** for your specific faculty/department, as fees can vary by programme
+
+They'll give you the exact amount, payment channels, and deadlines. Don't rely on what other students tell you — always confirm with the Bursary! 😊"
+22,can i pay fees in installments,fee_payment,fee_payment,0.513,True,7.14,"That's a great question! Unfortunately, I don't have verified details about installment payment options for RSU school fees at the moment.
+
+For accurate information on this, I'd recommend reaching out to the **Bursary Department** directly — they'll be able to tell you:
+- Whether installmental payment is allowed
+- The payment structure/schedule if it is
+- Any deadlines you need to be aware of
+
+You can visit the Bursary office on campus or check if they have an official contact email or phone number through the RSU website. 😊"
+23,wia do i go to pay fees,fee_payment,fee_payment,0.479,True,6.44,"Hey! 👋
+
+I don't have the verified fee payment details available right now (like the exact channels, amounts, or deadlines).
+
+For accurate information on how and where to pay your fees, I'd suggest you:
+
+- **Visit the Bursary directly** — they're your best bet for payment channels and deadlines
+- **Check the RSU official website** for any posted payment instructions
+
+Sorry I couldn't give you a straight answer on this one! The Bursary will sort you out quickly. 😊"
+24,i missed d fee deadline can i still register for exams,fee_payment,course_registration,0.491,False,6.61,"Hey! So regarding exam registration and fee deadlines, I actually don't have the verified details on that in my system right now — the information hasn't been fully updated yet.
+
+Your best bet would be to **contact the ICT Unit or the Student Affairs office directly** — they'll be able to tell you:
+
+- Whether late registration is still possible
+- If there are any penalties or exceptions
+- Next steps you need to take
+
+Don't delay though, the sooner you reach out the better your chances of sorting it out! 🙂"
+25,is there a fee payment portal,fee_payment,fee_payment,0.645,True,5.77,"Hey! So the fee payment information in our system is still being updated with the latest verified details. 😊
+
+For accurate info on the **payment portal, channels, and deadlines**, I'd recommend reaching out directly to the **Bursary Department** — they'll have everything you need on how and where to pay.
+
+You can also check the **RSU official website** for any payment links or announcements. Would you like help with anything else?"
+26,skool fees for 300 level pls,fee_payment,fee_payment,0.38,True,6.37,"Hey! 👋
+
+I don't have the specific fee details for 300 level right now — that information hasn't been updated in my system yet.
+
+For the accurate and up-to-date fee amount, I'd suggest you:
+
+- **Visit the Bursary directly** — they're your best bet for exact figures
+- **Check the RSU official website** for any published fee schedules
+- **Ask your Department** as they sometimes have this info handy too
+
+Sorry I couldn't give you a straight answer on this one! 😊"
+27,When are the exams starting?,examination_schedule,examination_schedule,0.518,True,5.47,"Hey! Unfortunately, I don't have the verified examination timetable details available right now to give you the exact dates. 📅
+
+I'd suggest checking with the **Academic Affairs office** or your **department's notice board** for the confirmed exam schedule. You can also keep an eye on the **RSU official portal** or any official communication channels for updates.
+
+Is there anything else I can help you with?"
+28,wen's d exam timetable out,examination_schedule,examination_schedule,0.512,True,5.73,"Hey! 👋
+
+The exam timetable information hasn't been updated in my system yet. I'd suggest checking with the **Examinations and Records office** or keep an eye on the **official RSU notice boards and website** for the latest schedule.
+
+You can also ask your **departmental secretary** — they usually get timetable updates early! 😊"
+29,What is the venue for my exams?,examination_schedule,examination_schedule,0.583,True,6.51,"Hey! 👋 Unfortunately, the exam venue details haven't been updated in my knowledge base yet — it looks like that information is still being finalized.
+
+Here's what I'd suggest:
+
+- **Check the official RSU portal** for the latest timetable
+- **Contact your department's exam officer** — they'd have the most up-to-date venue info
+- You can also reach out to the **Academic Affairs office** directly
+
+Sorry I couldn't give you a straight answer on this one! 😊"
+30,how do i check my exam schedule,examination_schedule,examination_schedule,0.566,True,6.75,"Great question! Unfortunately, the detailed exam timetable information hasn't been loaded into my system yet — it's still being updated with verified details.
+
+Here's what I'd suggest:
+
+1. **Check the RSU official website** for any posted timetables
+2. **Visit your Faculty/Department notice board** — schedules are usually posted there
+3. **Contact your Department's examination officer** directly
+4. **Reach out to the Student Affairs office** if you're unsure who to contact
+
+Sorry I couldn't give you a direct answer on this one! Once the timetable info is updated in my system, I'll be able to help more specifically. 😊"
+31,can i still register for exams if i havent paid fees,examination_schedule,fee_payment,0.436,False,6.98,"That's a great question, and an important one! Unfortunately, I don't have verified information on hand about the specific requirements linking fee payment to exam registration at RSU.
+
+I'd recommend reaching out to the right offices to get a clear answer:
+
+- **Bursary** – to clarify your fee payment status
+- **Student Affairs or your Faculty Officer** – to find out if unpaid fees affect your eligibility to sit for exams
+- **ICT Unit** – if the issue is related to your portal access for exam registration
+
+It's best to sort this out **as soon as possible** so you don't miss any deadlines. Would you like help with anything else? 😊"
+32,wen is d next exam,examination_schedule,examination_schedule,0.435,True,6.52,"Hey! 👋
+
+I'm sorry, I don't have the verified examination timetable available right now — it looks like that information hasn't been updated in my system yet.
+
+For the accurate exam schedule, I'd suggest:
+
+- **Checking your department's notice board**
+- **Visiting the Examinations & Records office**
+- **Asking your course rep or HOD**
+
+They'll have the most up-to-date timetable. Good luck with your exams! 📚"
+33,is the exam timetable out yet,examination_schedule,examination_schedule,0.603,True,6.06,"Hey! 👋 Unfortunately, I don't have the verified exam timetable details available right now — it looks like that information hasn't been updated in our system yet.
+
+I'd suggest:
+- **Checking the RSU official website** or notice boards for the latest timetable
+- **Contacting the Examinations Officer** or your **Faculty/Departmental office** directly — they'll have the most up-to-date info
+
+Sorry I couldn't be more help on this one! 😊"
+34,i need info on exam venue and time,examination_schedule,examination_schedule,0.694,True,6.36,"Hey! 👋
+
+Unfortunately, I don't have the verified examination timetable and venue details available right now — that information hasn't been updated in my system yet.
+
+Here's what I'd suggest:
+
+- **Check the official RSU website** for the latest exam schedule
+- **Visit or contact the Examinations & Records office** — they'll have the confirmed timetable and venue assignments
+- **Check your department's notice board** as schedules are often posted there too
+
+Sorry I couldn't give you the exact details directly! Is there anything else I can help you with?"
+35,wat exams do i have this week,examination_schedule,greeting,0.365,False,5.79,"Hey! 👋 I don't have access to your personal exam schedule or timetable information.
+
+For your exam schedule, I'd suggest:
+
+- **Checking your department's notice board** or departmental office
+- **Your faculty's website or portal**
+- **Contacting your course rep** — they usually have the timetable handy
+
+Is there anything else I can help you with? 😊"

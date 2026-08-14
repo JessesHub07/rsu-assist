@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>My Documents - RSU Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='documents.css') }}">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    {% include "_sidebar.html" %}
+
+    <div class="chat-app">
+      <header class="chat-header">
+        <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+        <div class="avatar">RSU</div>
+        <div class="header-text">
+          <div class="title">My Documents</div>
+          <div class="subtitle" id="headerSubtitle">Private to your account</div>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button">Dark Mode</button>
+      </header>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="documents-body">
+        <div class="documents-intro">
+          <p>Upload a PDF, past questions, lecture notes, or any study material. RSU Assist learns from it,
+          so you can ask it questions about your own documents in chat. Only you can see what you upload here.</p>
+        </div>
+
+        <div class="documents-dropzone" id="documentsDropzone">
+          <label class="documents-upload-btn">
+            Upload a PDF
+            <input id="documentFileInput" type="file" accept="application/pdf" hidden>
+          </label>
+          <p class="documents-dropzone-hint">or drag and drop a PDF here</p>
+          <p class="documents-upload-status" id="documentsUploadStatus"></p>
+        </div>
+
+        <div class="documents-list" id="documentsList"></div>
+
+        <p class="documents-empty" id="documentsEmpty" hidden>You haven't uploaded any documents yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='documents.js') }}"></script>
+</body>
+</html>
