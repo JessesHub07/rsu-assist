@@ -39,6 +39,9 @@ MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024
 
 init_db()
 
+from seed_students import main as seed_demo_students  # noqa: E402
+seed_demo_students()
+
 oauth = OAuth(app)
 oauth.register(
     name="google",
