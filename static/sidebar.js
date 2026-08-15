@@ -11,12 +11,14 @@ const root = document.documentElement;
 const themeToggle = document.getElementById("themeToggle");
 const savedTheme = localStorage.getItem("rsu_theme") || "light";
 root.setAttribute("data-theme", savedTheme);
-themeToggle.textContent = savedTheme === "light" ? "Dark Mode" : "Light Mode";
+themeToggle.textContent = savedTheme === "light" ? "\u{1F319}" : "☀️";
+themeToggle.setAttribute("aria-label", savedTheme === "light" ? "Switch to dark mode" : "Switch to light mode");
 
 themeToggle.addEventListener("click", () => {
   const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
   root.setAttribute("data-theme", next);
-  themeToggle.textContent = next === "light" ? "Dark Mode" : "Light Mode";
+  themeToggle.textContent = next === "light" ? "\u{1F319}" : "☀️";
+  themeToggle.setAttribute("aria-label", next === "light" ? "Switch to dark mode" : "Switch to light mode");
   localStorage.setItem("rsu_theme", next);
 });
 

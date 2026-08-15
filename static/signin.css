@@ -37,6 +37,7 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* ---------- Brand pane ---------- */
@@ -149,9 +150,15 @@ html[data-theme="dark"] .form-pane::before {
   z-index: 2;
   background: var(--card-light);
   border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 12px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--text-light);
 }

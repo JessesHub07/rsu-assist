@@ -40,6 +40,7 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
 .app-shell {
   display: flex;
   height: 100vh;
+  height: 100dvh;
 }
 
 /* ---------- Sidebar ---------- */
@@ -69,6 +70,7 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   transition: width 0.18s ease, margin-left 0.18s ease;
 }
@@ -228,6 +230,7 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
 .chat-app {
   flex: 1;
   height: 100vh;
+  height: 100dvh;
   background: var(--bg-light);
   color: var(--text-light);
   display: flex;
@@ -284,9 +287,15 @@ html[data-theme="dark"] .chat-app { background: var(--bg-dark); color: var(--tex
   background: rgba(255,255,255,0.15);
   border: none;
   color: #fff;
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: 11.5px;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
 }
