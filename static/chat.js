@@ -57,6 +57,27 @@ function sendChip(text) {
   formEl.requestSubmit();
 }
 
+// ---------------------------------------------------------------------------
+// Auto-growing message box (textarea grows with content instead of
+// scrolling text sideways; Enter sends, Shift+Enter inserts a newline)
+// ---------------------------------------------------------------------------
+
+const INPUT_MAX_HEIGHT = 140;
+
+function autoResizeInput() {
+  inputEl.style.height = "auto";
+  inputEl.style.height = Math.min(inputEl.scrollHeight, INPUT_MAX_HEIGHT) + "px";
+}
+
+inputEl.addEventListener("input", autoResizeInput);
+
+inputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    formEl.requestSubmit();
+  }
+});
+
 function renderChips(chips) {
   const container = document.getElementById("suggestedChips");
   container.innerHTML = "";
@@ -196,6 +217,7 @@ formEl.addEventListener("submit", async (e) => {
 
   appendBubble(message, "user", attachment ? attachment.name : null);
   inputEl.value = "";
+  autoResizeInput();
   clearAttachment();
   const typingBubble = appendBubble("typing...", "bot typing");
 
