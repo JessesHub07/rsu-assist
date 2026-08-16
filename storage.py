@@ -87,6 +87,7 @@ def init_db():
     )
     conn.commit()
     _migrate_add_user_id_columns(conn)
+    _migrate_add_project_id_columns(conn)
     conn.close()
 
 
@@ -97,6 +98,17 @@ def _migrate_add_user_id_columns(conn):
         cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
         if "user_id" not in cols:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN user_id INTEGER REFERENCES users(id)")
+    conn.commit()
+
+
+def _migrate_add_project_id_columns(conn):
+    """A message/document with project_id NULL belongs to the student's
+    general chat/documents; a non-null value scopes it to that project only,
+    same pattern as _migrate_add_user_id_columns above."""
+    for table in ("messages", "documents"):
+        cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
+        if "project_id" not in cols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN project_id INTEGER REFERENCES projects(id)")
     conn.commit()
 
 
@@ -281,11 +293,11 @@ def update_profile(user_id, full_name, email):
 # Messages
 # ---------------------------------------------------------------------------
 
-def save_message(session_id, role, content, user_id=None):
+def save_message(session_id, role, content, user_id=None, project_id=None):
     conn = get_conn()
     conn.execute(
-        "INSERT INTO messages (user_id, session_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)",
-        (user_id, session_id, role, content, _now()),
+        "INSERT INTO messages (user_id, session_id, role, content, created_at, project_id) VALUES (?, ?, ?, ?, ?, ?)",
+        (user_id, session_id, role, content, _now(), project_id),
     )
     conn.commit()
     conn.close()
@@ -302,8 +314,10 @@ def get_history(session_id, limit=10):
 
 
 def get_sessions_for_user(user_id, limit=20):
-    """One row per past conversation, most recently active first, with the
-    first message in that session as a preview."""
+    """One row per past general (non-project) conversation, most recently
+    active first, with the first message in that session as a preview.
+    Project chats live on the project's own page instead, see
+    get_sessions_for_project."""
     conn = get_conn()
     rows = conn.execute(
         """
@@ -314,12 +328,34 @@ def get_sessions_for_user(user_id, limit=20):
                 WHERE m2.session_id = m1.session_id AND m2.role = 'user'
                 ORDER BY m2.id ASC LIMIT 1) AS preview
         FROM messages m1
-        WHERE user_id = ?
+        WHERE user_id = ? AND project_id IS NULL
         GROUP BY session_id
         ORDER BY last_active_at DESC
         LIMIT ?
         """,
         (user_id, limit),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_sessions_for_project(project_id, user_id, limit=50):
+    conn = get_conn()
+    rows = conn.execute(
+        """
+        SELECT session_id,
+               MIN(created_at) AS started_at,
+               MAX(created_at) AS last_active_at,
+               (SELECT content FROM messages m2
+                WHERE m2.session_id = m1.session_id AND m2.role = 'user'
+                ORDER BY m2.id ASC LIMIT 1) AS preview
+        FROM messages m1
+        WHERE user_id = ? AND project_id = ?
+        GROUP BY session_id
+        ORDER BY last_active_at DESC
+        LIMIT ?
+        """,
+        (user_id, project_id, limit),
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -345,20 +381,30 @@ def get_session_messages(session_id, user_id):
 # Documents
 # ---------------------------------------------------------------------------
 
-def save_document(filename, chunk_count, user_id=None):
+def save_document(filename, chunk_count, user_id=None, project_id=None):
     conn = get_conn()
     conn.execute(
-        "INSERT INTO documents (user_id, filename, chunk_count, uploaded_at) VALUES (?, ?, ?, ?)",
-        (user_id, filename, chunk_count, _now()),
+        "INSERT INTO documents (user_id, filename, chunk_count, uploaded_at, project_id) VALUES (?, ?, ?, ?, ?)",
+        (user_id, filename, chunk_count, _now(), project_id),
     )
     conn.commit()
     conn.close()
 
 
 def get_documents_for_user(user_id):
+    """General (non-project) documents only, same split as get_sessions_for_user."""
     conn = get_conn()
     rows = conn.execute(
-        "SELECT * FROM documents WHERE user_id = ? ORDER BY id DESC", (user_id,)
+        "SELECT * FROM documents WHERE user_id = ? AND project_id IS NULL ORDER BY id DESC", (user_id,)
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_documents_for_project(project_id, user_id):
+    conn = get_conn()
+    rows = conn.execute(
+        "SELECT * FROM documents WHERE user_id = ? AND project_id = ? ORDER BY id DESC", (user_id, project_id)
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -391,6 +437,47 @@ def get_projects_for_user(user_id):
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+def get_project(project_id, user_id):
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT * FROM projects WHERE id = ? AND user_id = ?", (project_id, user_id)
+    ).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def update_project(project_id, user_id, name, description, status, tags):
+    conn = get_conn()
+    conn.execute(
+        """
+        UPDATE projects SET name = ?, description = ?, status = ?, tags = ?, updated_at = ?
+        WHERE id = ? AND user_id = ?
+        """,
+        (name, description, status, tags, _now(), project_id, user_id),
+    )
+    conn.commit()
+    conn.close()
+    return get_project(project_id, user_id)
+
+
+def delete_project(project_id, user_id):
+    """Deleting a project un-scopes its chats and documents back to the
+    student's general history rather than destroying them, only the
+    project record itself is removed."""
+    conn = get_conn()
+    conn.execute(
+        "UPDATE messages SET project_id = NULL WHERE project_id = ? AND user_id = ?",
+        (project_id, user_id),
+    )
+    conn.execute(
+        "UPDATE documents SET project_id = NULL WHERE project_id = ? AND user_id = ?",
+        (project_id, user_id),
+    )
+    conn.execute("DELETE FROM projects WHERE id = ? AND user_id = ?", (project_id, user_id))
+    conn.commit()
+    conn.close()
 
 
 # ---------------------------------------------------------------------------

@@ -199,8 +199,12 @@ document.querySelectorAll(".nav-soon").forEach((btn) => {
 // ---------------------------------------------------------------------------
 
 document.getElementById("newChatBtn").addEventListener("click", () => {
+  // This button always means "general chat", if we're inside a project
+  // chat right now, leave it rather than starting a new chat still scoped
+  // to that project (the project's own "+ New chat" link covers that case).
+  const inProject = new URLSearchParams(window.location.search).has("project");
   localStorage.removeItem("rsu_session_id");
-  if (typeof window.startNewChat === "function") {
+  if (!inProject && typeof window.startNewChat === "function") {
     window.startNewChat();
     closeMobileSidebar();
   } else {

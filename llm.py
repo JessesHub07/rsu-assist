@@ -63,7 +63,7 @@ def build_viewer_block(viewer):
     return f"Signed in as a guest. Name: {viewer.get('full_name', 'unknown')}."
 
 
-def generate_reply(question, retrieved, history, attachment=None, viewer=None):
+def generate_reply(question, retrieved, history, attachment=None, viewer=None, project=None):
     """history: list of {"role": "user"|"assistant", "content": str}, oldest first.
 
     attachment (optional): a one-off file the student just shared with this
@@ -74,10 +74,19 @@ def generate_reply(question, retrieved, history, attachment=None, viewer=None):
 
     viewer (optional): the signed-in user's own profile (see build_viewer_block),
     so the assistant can answer questions about the student themselves.
+
+    project (optional): the project this chat is scoped to, if the student
+    started it from a project's page rather than general chat.
     """
     context_block = build_context_block(retrieved)
     viewer_block = build_viewer_block(viewer)
     text_block = f"VIEWER:\n{viewer_block}\n\nCONTEXT:\n{context_block}\n\nSTUDENT QUESTION:\n{question}"
+
+    if project:
+        project_block = f"This conversation is happening inside the student's project \"{project['name']}\""
+        if project.get("description"):
+            project_block += f": {project['description']}"
+        text_block = f"{project_block}\n\n{text_block}"
 
     if attachment and attachment["type"] == "text":
         text_block = (

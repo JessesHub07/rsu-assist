@@ -21,16 +21,23 @@ from storage import (  # noqa: E402
     authenticate_student,
     change_password,
     compute_level,
+    create_project,
+    delete_project,
+    get_documents_for_project,
     get_documents_for_user,
     get_history,
     get_or_create_guest,
+    get_project,
+    get_projects_for_user,
     get_session_messages,
+    get_sessions_for_project,
     get_sessions_for_user,
     get_user,
     init_db,
     save_document,
     save_message,
     update_profile,
+    update_project,
 )
 
 app = Flask(__name__)
@@ -233,6 +240,80 @@ def change_password_route():
     return jsonify({"success": True})
 
 
+def _serialize_project(project):
+    return {
+        "id": project["id"],
+        "name": project["name"],
+        "description": project["description"],
+        "status": project["status"],
+        "tags": project["tags"],
+        "created_at": project["created_at"],
+        "updated_at": project["updated_at"],
+    }
+
+
+@app.route("/projects-ui")
+def projects_ui():
+    return render_template("projects.html", active="projects")
+
+
+@app.route("/project-ui/<int:project_id>")
+def project_ui(project_id):
+    return render_template("project.html", active="projects", project_id=project_id)
+
+
+@app.route("/projects", methods=["GET", "POST"])
+def projects():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to use projects."}), 401
+
+    if request.method == "POST":
+        data = request.get_json(force=True)
+        name = (data.get("name") or "").strip()
+        if not name:
+            return jsonify({"error": "Give your project a name."}), 400
+        description = (data.get("description") or "").strip()
+        status = data.get("status") or "Planning"
+        tags = (data.get("tags") or "").strip()
+        project_id = create_project(user["id"], name, description, status, tags)
+        return jsonify({"project": _serialize_project(get_project(project_id, user["id"]))})
+
+    return jsonify({"projects": [_serialize_project(p) for p in get_projects_for_user(user["id"])]})
+
+
+@app.route("/projects/<int:project_id>", methods=["GET", "PATCH", "DELETE"])
+def project_detail(project_id):
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to use projects."}), 401
+
+    project = get_project(project_id, user["id"])
+    if not project:
+        return jsonify({"error": "Project not found."}), 404
+
+    if request.method == "DELETE":
+        delete_project(project_id, user["id"])
+        return jsonify({"success": True})
+
+    if request.method == "PATCH":
+        data = request.get_json(force=True)
+        name = (data.get("name") or project["name"]).strip()
+        if not name:
+            return jsonify({"error": "Give your project a name."}), 400
+        description = data.get("description", project["description"]) or ""
+        status = data.get("status") or project["status"]
+        tags = data.get("tags", project["tags"]) or ""
+        updated = update_project(project_id, user["id"], name, description, status, tags)
+        return jsonify({"project": _serialize_project(updated)})
+
+    return jsonify({
+        "project": _serialize_project(project),
+        "sessions": get_sessions_for_project(project_id, user["id"]),
+        "documents": get_documents_for_project(project_id, user["id"]),
+    })
+
+
 @app.route("/chat-ui")
 def chat_ui():
     return render_template("index.html", active="chat")
@@ -363,18 +444,29 @@ def chat():
     department = user.get("department") if user else None
     level = user.get("level") if user else None
 
+    project_id = request.form.get("project_id", type=int)
+    project = None
+    if project_id is not None:
+        # Only trust a project_id that actually belongs to this signed-in
+        # user, otherwise silently fall back to general (unscoped) chat.
+        project = get_project(project_id, user_id) if user_id else None
+        if not project:
+            project_id = None
+
     store = get_store()
-    retrieved = store.search(message, department=department, level=level, user_id=user_id) if message else []
+    retrieved = store.search(
+        message, department=department, level=level, user_id=user_id, project_id=project_id
+    ) if message else []
     history = get_history(session_id) if remember_context else []
 
     reply = generate_reply(
         message or "What can you tell me about this attachment?",
-        retrieved, history, attachment=attachment, viewer=user,
+        retrieved, history, attachment=attachment, viewer=user, project=project,
     )
 
     if save_history:
-        save_message(session_id, "user", saved_message, user_id=user_id)
-        save_message(session_id, "assistant", reply, user_id=user_id)
+        save_message(session_id, "user", saved_message, user_id=user_id, project_id=project_id)
+        save_message(session_id, "assistant", reply, user_id=user_id, project_id=project_id)
 
     return jsonify({"reply": reply, "session_id": session_id})
 
@@ -420,9 +512,13 @@ def upload():
 
     user_id = user["id"]
 
+    project_id = request.form.get("project_id", type=int)
+    if project_id is not None and not get_project(project_id, user_id):
+        project_id = None
+
     store = get_store()
-    chunk_count = store.add_pdf(file.filename, text, user_id=user_id)
-    save_document(file.filename, chunk_count, user_id=user_id)
+    chunk_count = store.add_pdf(file.filename, text, user_id=user_id, project_id=project_id)
+    save_document(file.filename, chunk_count, user_id=user_id, project_id=project_id)
 
     return jsonify({"filename": file.filename, "chunks_added": chunk_count})
 

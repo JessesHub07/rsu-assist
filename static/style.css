@@ -358,6 +358,24 @@ html[data-theme="dark"] .header-logo { box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
   flex-shrink: 0;
 }
 
+.project-chat-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 20px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: rgba(15,107,60,0.08);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .project-chat-banner { background: rgba(79,216,139,0.10); }
+
 .chat-body {
   position: relative;
   flex: 1;

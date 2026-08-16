@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Project - RSU Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='projects.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='documents.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='project.css') }}">
+</head>
+<body data-project-id="{{ project_id }}">
+  <div class="app-shell" id="appShell">
+    {% include "_sidebar.html" %}
+
+    <div class="chat-app">
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+          <span class="header-title-pill">RSU Assist</span>
+        </div>
+        <img src="{{ url_for('static', filename='rsu-logo-2.png') }}" alt="RSU crest" class="header-logo">
+      </header>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="project-detail-body" id="projectDetailBody" hidden>
+        <a href="/projects-ui" class="project-back-link">&larr; All projects</a>
+
+        <div class="project-detail-header">
+          <div class="project-folder-icon project-folder-icon-lg">&#128193;</div>
+          <div class="project-detail-header-text">
+            <div class="project-detail-title-row">
+              <h1 id="projectDetailName">-</h1>
+              <span class="project-status-badge" id="projectDetailStatus"></span>
+            </div>
+            <p id="projectDetailDesc"></p>
+            <div class="project-card-tags" id="projectDetailTags"></div>
+          </div>
+          <div class="project-detail-actions">
+            <button type="button" class="project-action-btn" id="editProjectBtn">Edit</button>
+            <button type="button" class="project-action-btn project-action-danger" id="deleteProjectBtn">Delete</button>
+          </div>
+        </div>
+
+        <div class="project-section">
+          <div class="project-section-top">
+            <h2>Chats in this project</h2>
+            <a class="project-new-chat-btn" id="projectNewChatBtn">+ New chat</a>
+          </div>
+          <div class="project-chat-list" id="projectChatList"></div>
+          <p class="project-section-empty" id="projectChatEmpty" hidden>No chats in this project yet.</p>
+        </div>
+
+        <div class="project-section">
+          <h2>Documents in this project</h2>
+          <p class="project-section-desc">Files uploaded here only inform chats inside this project.</p>
+          <div class="documents-dropzone" id="projectDropzone">
+            <label class="documents-upload-btn">
+              Upload a PDF
+              <input id="projectFileInput" type="file" accept="application/pdf" hidden>
+            </label>
+            <p class="documents-dropzone-hint">or drag and drop a PDF here</p>
+            <p class="documents-upload-status" id="projectUploadStatus"></p>
+          </div>
+          <div class="documents-list" id="projectDocumentsList"></div>
+          <p class="project-section-empty" id="projectDocumentsEmpty" hidden>No documents uploaded yet.</p>
+        </div>
+      </div>
+
+      <p class="project-notfound" id="projectNotFound" hidden>This project doesn't exist, or isn't yours to view.</p>
+    </div>
+  </div>
+
+  <div class="project-modal-backdrop" id="projectModalBackdrop" hidden>
+    <div class="project-modal">
+      <h2>Edit Project</h2>
+      <form id="projectEditForm">
+        <label class="settings-field">
+          <span>Name</span>
+          <input type="text" id="projectName" autocomplete="off">
+        </label>
+        <label class="settings-field">
+          <span>Description</span>
+          <textarea id="projectDescription" rows="3"></textarea>
+        </label>
+        <label class="settings-field">
+          <span>Status</span>
+          <select id="projectStatus">
+            <option value="Planning">Planning</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </label>
+        <label class="settings-field">
+          <span>Tags</span>
+          <input type="text" id="projectTags" autocomplete="off">
+        </label>
+        <p class="project-modal-error" id="projectModalError" hidden></p>
+        <div class="project-modal-actions">
+          <button type="button" class="project-modal-cancel" id="projectModalCancel">Cancel</button>
+          <button type="submit" class="project-modal-save" id="projectModalSave">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='project.js') }}"></script>
+</body>
+</html>

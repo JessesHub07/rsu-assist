@@ -138,21 +138,31 @@ class VectorStore:
             if persist:
                 self._save()
 
-    def add_pdf(self, filename, full_text, user_id=None):
+    def add_pdf(self, filename, full_text, user_id=None, project_id=None):
         chunks = chunk_text(full_text)
-        metadatas = [{"source": "document", "filename": filename, "user_id": user_id} for _ in chunks]
+        metadatas = [
+            {"source": "document", "filename": filename, "user_id": user_id, "project_id": project_id}
+            for _ in chunks
+        ]
         self.add_documents(chunks, metadatas)
         return len(chunks)
 
-    def _is_visible(self, metadata, department, level, user_id):
+    def _is_visible(self, metadata, department, level, user_id, project_id):
         """Uploaded documents are private study material: a chunk from a
-        document is only visible to the student who uploaded it. Knowledge
-        base content keeps the existing department/level rule."""
+        document is only visible to the student who uploaded it, and only
+        within the same project scope it was uploaded into (general
+        documents for general chats, a project's documents only for chats
+        inside that project) so a project stays a contained workspace.
+        Knowledge base content keeps the existing department/level rule."""
         if metadata.get("source") == "document":
-            return metadata.get("user_id") is not None and metadata.get("user_id") == user_id
+            return (
+                metadata.get("user_id") is not None
+                and metadata.get("user_id") == user_id
+                and metadata.get("project_id") == project_id
+            )
         return is_visible(metadata.get("department"), metadata.get("level"), department, level)
 
-    def search(self, query, top_k=4, min_score=0.25, department=None, level=None, user_id=None):
+    def search(self, query, top_k=4, min_score=0.25, department=None, level=None, user_id=None, project_id=None):
         if self.embeddings is None or len(self.embeddings) == 0:
             return []
         query_vec = self.model.encode([query], normalize_embeddings=True)[0]
@@ -163,7 +173,7 @@ class VectorStore:
         for i in order:
             if scores[i] < min_score:
                 break  # scores are sorted descending, nothing further will pass
-            if not self._is_visible(self.metadatas[i], department, level, user_id):
+            if not self._is_visible(self.metadatas[i], department, level, user_id, project_id):
                 continue
             results.append(
                 {"text": self.texts[i], "metadata": self.metadatas[i], "score": float(scores[i])}

@@ -9,8 +9,16 @@ const attachmentInputEl = document.getElementById("attachmentInput");
 const attachmentPreviewEl = document.getElementById("attachmentPreview");
 const attachmentNameEl = document.getElementById("attachmentName");
 const attachmentRemoveEl = document.getElementById("attachmentRemove");
+const projectBannerEl = document.getElementById("projectBanner");
+const projectBannerNameEl = document.getElementById("projectBannerName");
 
-let sessionId = localStorage.getItem("rsu_session_id");
+// A chat opened from inside a project (?project=<id>) is scoped to it: it
+// doesn't use the general chat's remembered session, and a fresh visit
+// always starts a new project chat unless a specific ?session= is given
+// (that's how a project's chat list reopens one).
+const urlParams = new URLSearchParams(window.location.search);
+const projectId = urlParams.get("project");
+let sessionId = projectId ? urlParams.get("session") : localStorage.getItem("rsu_session_id");
 let pendingAttachment = null;
 
 // ---------------------------------------------------------------------------
@@ -131,6 +139,20 @@ function startNewChat() {
 }
 window.startNewChat = startNewChat;
 
+async function initProjectBanner() {
+  if (!projectId) return;
+  try {
+    const res = await fetch(`/projects/${projectId}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    projectBannerNameEl.textContent = data.project.name;
+    projectBannerEl.href = `/project-ui/${projectId}`;
+    projectBannerEl.hidden = false;
+  } catch (err) {
+    // Not critical, the chat still works without the banner.
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Current user / greeting
 // ---------------------------------------------------------------------------
@@ -145,6 +167,7 @@ async function initChatPage() {
   ];
 
   const user = await loadSidebarUser();
+  initProjectBanner();
 
   if (user) {
     const firstName = user.full_name.split(" ")[0];
@@ -240,6 +263,7 @@ formEl.addEventListener("submit", async (e) => {
   const formData = new FormData();
   formData.append("message", message);
   if (sessionId) formData.append("session_id", sessionId);
+  if (projectId) formData.append("project_id", projectId);
   if (attachment) formData.append("attachment", attachment);
   formData.append("save_history", prefOn("rsu_pref_save_history"));
   formData.append("remember_context", prefOn("rsu_pref_remember_context"));
@@ -250,7 +274,7 @@ formEl.addEventListener("submit", async (e) => {
 
     if (data.session_id) {
       sessionId = data.session_id;
-      localStorage.setItem("rsu_session_id", sessionId);
+      if (!projectId) localStorage.setItem("rsu_session_id", sessionId);
     }
 
     typingBubble.remove();
