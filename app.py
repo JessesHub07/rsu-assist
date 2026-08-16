@@ -45,6 +45,18 @@ init_db()
 from seed_students import main as seed_demo_students  # noqa: E402
 seed_demo_students()
 
+# Loading the embedding model and seeding the vector store is the one
+# expensive, CPU-bound step in this app, and CPU-bound work can hold the
+# GIL long enough to stall every other request even under threaded workers
+# (confirmed: a login request queued behind an in-flight /chat request on a
+# fresh deploy). Running it in a background thread at boot, instead of
+# lazily on whichever request calls get_store() first, means that cost
+# lands during the deploy's idle settling time rather than during a real
+# user's first message, without blocking gunicorn from binding the port.
+import threading  # noqa: E402
+
+threading.Thread(target=get_store, daemon=True).start()
+
 oauth = OAuth(app)
 oauth.register(
     name="google",
