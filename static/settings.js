@@ -15,6 +15,11 @@ subnavItems.forEach((btn) => {
     subnavItems.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     panels.forEach((p) => { p.hidden = p.id !== `panel-${btn.dataset.panel}`; });
+    // Switching panels doesn't reset scroll on its own, so if a student was
+    // scrolled down reading a taller panel (e.g. Chat's toggles) and then
+    // taps another category, the newly shown panel can start off-screen
+    // below the fold. Bring it into view instead of leaving them to scroll.
+    document.getElementById(`panel-${btn.dataset.panel}`).scrollIntoView({ behavior: "auto", block: "start" });
   });
 });
 
