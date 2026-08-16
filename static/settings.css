@@ -320,10 +320,20 @@ html[data-theme="dark"] .settings-context-note { color: var(--subtext-dark); bac
 @media (max-width: 700px) {
   .settings-layout { flex-direction: column; }
   .settings-subnav {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     width: 100%;
     flex-direction: row;
     overflow-x: auto;
     gap: 6px;
+    padding: 8px 0;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+  html[data-theme="dark"] .settings-subnav {
+    background: var(--bg-dark);
+    border-color: var(--border-dark);
   }
   .settings-subnav-item { white-space: nowrap; }
 }
