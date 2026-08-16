@@ -239,6 +239,20 @@ def set_level_override(user_id, level):
     conn.close()
 
 
+def update_profile(user_id, full_name, email):
+    """Students and guests can edit their own name/email, nothing else,
+    matric number/department/level stay fixed to prevent a student from
+    spoofing the data their content scoping relies on."""
+    conn = get_conn()
+    conn.execute(
+        "UPDATE users SET full_name = ?, email = ? WHERE id = ?",
+        (full_name, email, user_id),
+    )
+    conn.commit()
+    conn.close()
+    return get_user(user_id)
+
+
 # ---------------------------------------------------------------------------
 # Messages
 # ---------------------------------------------------------------------------

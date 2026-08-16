@@ -85,6 +85,60 @@ html[data-theme="dark"] .theme-option {
 .theme-swatch-light { background: #f4f6f5; }
 .theme-swatch-dark { background: #0e1a15; }
 
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--subtext-light);
+}
+
+html[data-theme="dark"] .settings-field { color: var(--subtext-dark); }
+
+.settings-field input {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+html[data-theme="dark"] .settings-field input {
+  background: var(--bg-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark);
+}
+
+.settings-field input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.settings-save-status {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--green);
+  min-height: 1em;
+}
+
+.settings-save-btn {
+  align-self: flex-start;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 9px 22px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
 @media (max-width: 480px) {
   .settings-body { padding: 8px 16px 32px; }
 }

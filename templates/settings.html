@@ -27,6 +27,37 @@
         <h1 class="settings-heading">Settings</h1>
 
         <div class="settings-section">
+          <h2>Account</h2>
+          <p class="settings-section-desc">Update your name and email. Matric number, department, and level are set by your department and can't be changed here.</p>
+          <form id="profileForm" class="settings-form">
+            <label class="settings-field">
+              <span>Full name</span>
+              <input type="text" id="profileFullName" autocomplete="name">
+            </label>
+            <label class="settings-field">
+              <span>Email</span>
+              <input type="email" id="profileEmail" autocomplete="email">
+            </label>
+            <div id="readonlyFields" hidden>
+              <label class="settings-field">
+                <span>Matric number</span>
+                <input type="text" id="profileMatric" disabled>
+              </label>
+              <label class="settings-field">
+                <span>Department</span>
+                <input type="text" id="profileDepartment" disabled>
+              </label>
+              <label class="settings-field">
+                <span>Level</span>
+                <input type="text" id="profileLevel" disabled>
+              </label>
+            </div>
+            <p class="settings-save-status" id="profileSaveStatus"></p>
+            <button type="submit" class="settings-save-btn" id="profileSaveBtn">Save changes</button>
+          </form>
+        </div>
+
+        <div class="settings-section">
           <h2>Theme</h2>
           <p class="settings-section-desc">Choose how RSU Assist looks on this device.</p>
           <div class="theme-options" id="themeOptions">

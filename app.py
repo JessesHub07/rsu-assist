@@ -28,6 +28,7 @@ from storage import (  # noqa: E402
     init_db,
     save_document,
     save_message,
+    update_profile,
 )
 
 app = Flask(__name__)
@@ -156,6 +157,7 @@ def me():
             "id": user["id"],
             "user_type": user["user_type"],
             "full_name": user["full_name"],
+            "email": user.get("email"),
             "matric_number": user.get("matric_number"),
             "department": user.get("department"),
             "level": user.get("level"),
@@ -171,6 +173,26 @@ def home_ui():
 @app.route("/settings-ui")
 def settings_ui():
     return render_template("settings.html", active="settings")
+
+
+@app.route("/profile", methods=["POST"])
+def profile():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to update your profile."}), 401
+
+    data = request.get_json(force=True)
+    full_name = (data.get("full_name") or "").strip()
+    email = (data.get("email") or "").strip()
+
+    if not full_name:
+        return jsonify({"error": "Full name can't be empty."}), 400
+
+    updated = update_profile(user["id"], full_name, email)
+    return jsonify({
+        "success": True,
+        "user": {"full_name": updated["full_name"], "email": updated["email"]},
+    })
 
 
 @app.route("/chat-ui")
