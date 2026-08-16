@@ -196,4 +196,32 @@ CHAT_PREF_TOGGLES.forEach(({ id, key }) => {
 document.getElementById("settingsContextNote").textContent =
   "Chats are automatically scoped to your department and level, this improves answer accuracy for your specific curriculum.";
 
+// ---------------------------------------------------------------------------
+// Documents / Bookmarks stats
+// ---------------------------------------------------------------------------
+
+async function loadDocumentsStat() {
+  try {
+    const res = await fetch("/documents");
+    if (!res.ok) return;
+    const data = await res.json();
+    document.getElementById("settingsDocCount").textContent = (data.documents || []).length;
+  } catch (err) {
+    // Leave the placeholder "-" if this fails, not critical to the page.
+  }
+}
+
+async function loadBookmarksStat() {
+  try {
+    const res = await fetch("/bookmarks");
+    if (!res.ok) return;
+    const data = await res.json();
+    document.getElementById("settingsBookmarkCount").textContent = (data.bookmarks || []).length;
+  } catch (err) {
+    // Leave the placeholder "-" if this fails, not critical to the page.
+  }
+}
+
 initAccountSection();
+loadDocumentsStat();
+loadBookmarksStat();

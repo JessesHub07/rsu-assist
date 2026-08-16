@@ -31,7 +31,8 @@
             <button type="button" class="settings-subnav-item active" data-panel="account">Account</button>
             <button type="button" class="settings-subnav-item" data-panel="appearance">Appearance</button>
             <button type="button" class="settings-subnav-item" data-panel="chat">Chat</button>
-            <button type="button" class="settings-subnav-item settings-subnav-soon" data-label="Documents">Documents</button>
+            <button type="button" class="settings-subnav-item" data-panel="documents">Documents</button>
+            <button type="button" class="settings-subnav-item" data-panel="bookmarks">Bookmarks</button>
             <button type="button" class="settings-subnav-item settings-subnav-soon" data-label="Security">Security</button>
           </nav>
 
@@ -155,6 +156,30 @@
                 </div>
               </div>
               <p class="settings-context-note" id="settingsContextNote"></p>
+            </section>
+
+            <section class="settings-panel" id="panel-documents" hidden>
+              <div class="settings-section">
+                <h2>Your documents</h2>
+                <p class="settings-section-desc">PDFs you've uploaded are private to you and learned into the assistant's answers in the chats they belong to.</p>
+                <div class="settings-stat-row">
+                  <div class="settings-stat-value" id="settingsDocCount">-</div>
+                  <div class="settings-stat-label">documents uploaded to your general chats</div>
+                </div>
+                <a href="/documents-ui" class="settings-save-btn settings-link-btn">Manage documents</a>
+              </div>
+            </section>
+
+            <section class="settings-panel" id="panel-bookmarks" hidden>
+              <div class="settings-section">
+                <h2>Your bookmarks</h2>
+                <p class="settings-section-desc">Tap the star under any of RSU Assist's replies in chat to save it here for later.</p>
+                <div class="settings-stat-row">
+                  <div class="settings-stat-value" id="settingsBookmarkCount">-</div>
+                  <div class="settings-stat-label">answers saved</div>
+                </div>
+                <a href="/bookmarks-ui" class="settings-save-btn settings-link-btn">View bookmarks</a>
+              </div>
             </section>
 
           </div>

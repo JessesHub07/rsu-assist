@@ -52,6 +52,7 @@ CAT_COURSES = "Courses & Curriculum"
 CAT_EXAMS = "Registration & Exams"
 CAT_SIWES = "SIWES & Final Year Project"
 CAT_GRAD = "Graduation"
+CAT_FEES = "Fees"
 
 dept_wide("hod_info",
     ["who is the HOD", "who is the head of department", "who is the current HOD of Computer Engineering", "hod name"],
@@ -130,6 +131,18 @@ dept_wide("academic_calendar_key_dates",
     ["Key dates for the 2025/2026 academic session: Resumption and online registration begins Monday 3rd November 2025. First semester lectures begin Monday 10th November 2025. 37th/38th Combined Convocation Ceremony: Friday 5th - Saturday 6th December 2025. Christmas break: Saturday 20th December 2025 - Saturday 3rd January 2026. Matriculation Ceremony: Wednesday 28th January 2026. Second semester lectures run Monday 6th April - Friday 26th June 2026. Students' Week: Monday 8th - Saturday 13th June 2026. 2025/2026 session ends Friday 25th September 2026. This calendar was approved by the Senate at its 324th Regular Meeting (30th October 2025) and circulated by the Registrar, Ref RSU/REG/4/S.9/VOL.4/158, dated 12th November 2025."], CAT_EXAMS)
 
 # ---------------------------------------------------------------------------
+# Fees (from the BMAS Programme Handbook's Departmental Fees extract)
+# ---------------------------------------------------------------------------
+
+dept_wide("departmental_dues",
+    ["what are the departmental dues", "how much are dues", "departmental dues amount", "how much is departmental due"],
+    ["Departmental dues are ₦5,000.00."], CAT_FEES)
+
+dept_wide("university_administrative_fees",
+    ["what is the late registration fee", "how much is re-assessment", "exam grade appeal fee", "transfer fees", "inter faculty transfer fee", "intra faculty transfer fee", "fee to transfer from another university"],
+    ["These are general university administrative fees (not departmental dues): Late registration penalty, for the extra week allowed beyond the normal registration period, is ₦5,000.00. Re-assessment or appeal of an exam grade costs ₦10,000.00. An intra-faculty transfer form costs ₦10,000.00. An inter-faculty transfer form costs ₦10,000.00. Transferring from another university costs ₦200,000.00."], CAT_FEES)
+
+# ---------------------------------------------------------------------------
 # Level-specific: course lists (Year N, both semesters)
 # ---------------------------------------------------------------------------
 
@@ -196,6 +209,30 @@ level_specific("exam_dates_400", 400,
 level_specific("exam_dates_500", 500,
     ["when are my exams", "exam timetable for first semester", "when is the exam", "5th year exam dates", "final year exam dates"],
     ["First Semester 2025/2026 examinations for Year 4 & 5 students: Monday 23rd - Friday 27th February 2026. For the Second Semester, note a department-specific correction for Computer Engineering (BMAS): Year 4 & 5 exams begin Monday 24th July 2026 (running to Friday 28th July 2026), starting with final year (Year 5) students first, this supersedes the general university-wide date of Monday 6th - Friday 10th July 2026 for this item. Project Defense (External Examinations): Wednesday 12th - Friday 14th August 2026."], CAT_EXAMS)
+
+# ---------------------------------------------------------------------------
+# Level-specific: school fees (tuition) by level
+# ---------------------------------------------------------------------------
+
+level_specific("school_fees_100", 100,
+    ["what is my school fees", "how much is tuition", "school fees for 100 level", "100 level tuition"],
+    ["100 Level school fees (tuition) is ₦125,000.00."], CAT_FEES)
+
+level_specific("school_fees_200", 200,
+    ["what is my school fees", "how much is tuition", "school fees for 200 level", "200 level tuition"],
+    ["200 Level school fees (tuition) is ₦110,000.00."], CAT_FEES)
+
+level_specific("school_fees_300", 300,
+    ["what is my school fees", "how much is tuition", "school fees for 300 level", "300 level tuition"],
+    ["300 Level school fees (tuition) is ₦119,600.00."], CAT_FEES)
+
+level_specific("school_fees_400", 400,
+    ["what is my school fees", "how much is tuition", "school fees for 400 level", "400 level tuition"],
+    ["400 Level school fees (tuition) is ₦119,600.00."], CAT_FEES)
+
+level_specific("school_fees_500", 500,
+    ["what is my school fees", "how much is tuition", "school fees for 500 level", "500 level tuition", "final year tuition"],
+    ["500 Level school fees (tuition) is ₦124,500.00."], CAT_FEES)
 
 
 with open("data/knowledge_base.json", "w", encoding="utf-8") as f:

@@ -336,6 +336,41 @@
       ]
     },
     {
+      "tag": "departmental_dues",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what are the departmental dues",
+        "how much are dues",
+        "departmental dues amount",
+        "how much is departmental due"
+      ],
+      "responses": [
+        "Departmental dues are ₦5,000.00."
+      ]
+    },
+    {
+      "tag": "university_administrative_fees",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is the late registration fee",
+        "how much is re-assessment",
+        "exam grade appeal fee",
+        "transfer fees",
+        "inter faculty transfer fee",
+        "intra faculty transfer fee",
+        "fee to transfer from another university"
+      ],
+      "responses": [
+        "These are general university administrative fees (not departmental dues): Late registration penalty, for the extra week allowed beyond the normal registration period, is ₦5,000.00. Re-assessment or appeal of an exam grade costs ₦10,000.00. An intra-faculty transfer form costs ₦10,000.00. An inter-faculty transfer form costs ₦10,000.00. Transferring from another university costs ₦200,000.00."
+      ]
+    },
+    {
       "tag": "courses_100_first",
       "department": "Computer Engineering",
       "level": 100,
@@ -568,6 +603,87 @@
       ],
       "responses": [
         "First Semester 2025/2026 examinations for Year 4 & 5 students: Monday 23rd - Friday 27th February 2026. For the Second Semester, note a department-specific correction for Computer Engineering (BMAS): Year 4 & 5 exams begin Monday 24th July 2026 (running to Friday 28th July 2026), starting with final year (Year 5) students first, this supersedes the general university-wide date of Monday 6th - Friday 10th July 2026 for this item. Project Defense (External Examinations): Wednesday 12th - Friday 14th August 2026."
+      ]
+    },
+    {
+      "tag": "school_fees_100",
+      "department": "Computer Engineering",
+      "level": 100,
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is my school fees",
+        "how much is tuition",
+        "school fees for 100 level",
+        "100 level tuition"
+      ],
+      "responses": [
+        "100 Level school fees (tuition) is ₦125,000.00."
+      ]
+    },
+    {
+      "tag": "school_fees_200",
+      "department": "Computer Engineering",
+      "level": 200,
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is my school fees",
+        "how much is tuition",
+        "school fees for 200 level",
+        "200 level tuition"
+      ],
+      "responses": [
+        "200 Level school fees (tuition) is ₦110,000.00."
+      ]
+    },
+    {
+      "tag": "school_fees_300",
+      "department": "Computer Engineering",
+      "level": 300,
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is my school fees",
+        "how much is tuition",
+        "school fees for 300 level",
+        "300 level tuition"
+      ],
+      "responses": [
+        "300 Level school fees (tuition) is ₦119,600.00."
+      ]
+    },
+    {
+      "tag": "school_fees_400",
+      "department": "Computer Engineering",
+      "level": 400,
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is my school fees",
+        "how much is tuition",
+        "school fees for 400 level",
+        "400 level tuition"
+      ],
+      "responses": [
+        "400 Level school fees (tuition) is ₦119,600.00."
+      ]
+    },
+    {
+      "tag": "school_fees_500",
+      "department": "Computer Engineering",
+      "level": 500,
+      "category": "Fees",
+      "faq": true,
+      "patterns": [
+        "what is my school fees",
+        "how much is tuition",
+        "school fees for 500 level",
+        "500 level tuition",
+        "final year tuition"
+      ],
+      "responses": [
+        "500 Level school fees (tuition) is ₦124,500.00."
       ]
     }
   ]
