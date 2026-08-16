@@ -1,0 +1,37 @@
+{
+  "name": "RSU Assist",
+  "short_name": "RSU Assist",
+  "description": "AI academic assistant for Rivers State University students.",
+  "start_url": "/chat-ui",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0e1a15",
+  "theme_color": "#0f6b3c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

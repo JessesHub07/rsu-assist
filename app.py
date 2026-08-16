@@ -7,7 +7,7 @@ from datetime import timedelta
 import pdfplumber
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, session, url_for
 
 load_dotenv()
 
@@ -97,6 +97,13 @@ def current_user():
 @app.route("/")
 def signin():
     return render_template("signin.html")
+
+
+@app.route("/sw.js")
+def service_worker():
+    # Served from the root (not /static/sw.js) so its default scope covers
+    # the whole app, see the comment in static/pwa.js for why that matters.
+    return send_from_directory(app.static_folder, "sw.js", mimetype="application/javascript")
 
 
 @app.route("/login", methods=["POST"])

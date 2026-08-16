@@ -24,6 +24,8 @@ STUDENTS = [
     ("U2018/CPE/002", "Musa Ibrahim Garba", "musa.garba@stu.rsu.edu.ng", 2018, 500),
     ("U2018/CPE/003", "Precious Etim", "precious.etim@stu.rsu.edu.ng", 2018, 500),
     ("De.2021/5618", "Omoghene Princess", "yugbovwreomoghene@gmail.com", 2021, 500),
+    ("De.2025/6001", "Daniel Ishola", "daniel.ishola@stu.rsu.edu.ng", 2025, 200),
+    ("De.2025/6002", "Gabrielle Hachikaru Akainwo", "gabrielle.akainwo@stu.rsu.edu.ng", 2025, 200),
 ]
 
 

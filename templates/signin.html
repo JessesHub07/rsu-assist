@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0f6b3c">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='icon-192.png') }}">
 <title>RSU Assist — Sign In</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
 </head>
@@ -55,7 +58,7 @@
           </label>
           <label class="field">
             <span>Matric number or email</span>
-            <input type="text" id="identifier" placeholder="19/ENG/12345" autocomplete="username">
+            <input type="text" id="identifier" placeholder="De.2022/1234" autocomplete="username">
           </label>
           <label class="field password-field">
             <span>Password</span>
@@ -77,7 +80,7 @@
           </label>
           <label class="field">
             <span>Matric number</span>
-            <input type="text" id="signupMatric" placeholder="19/ENG/12345" autocomplete="username">
+            <input type="text" id="signupMatric" placeholder="De.2022/1234" autocomplete="username">
           </label>
           <p class="field-hint">Both must already be on record with your department.</p>
           <label class="field password-field">
@@ -109,5 +112,6 @@
   </div>
 
   <script src="{{ url_for('static', filename='signin.js') }}"></script>
+  <script src="{{ url_for('static', filename='pwa.js') }}"></script>
 </body>
 </html>
