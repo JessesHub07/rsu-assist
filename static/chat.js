@@ -15,10 +15,10 @@ const projectBannerNameEl = document.getElementById("projectBannerName");
 // A chat opened from inside a project (?project=<id>) is scoped to it: it
 // doesn't use the general chat's remembered session, and a fresh visit
 // always starts a new project chat unless a specific ?session= is given
-// (that's how a project's chat list reopens one).
+// (that's how a project's chat list, and bookmarks, reopen a past one).
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get("project");
-let sessionId = projectId ? urlParams.get("session") : localStorage.getItem("rsu_session_id");
+let sessionId = urlParams.get("session") || (projectId ? null : localStorage.getItem("rsu_session_id"));
 let pendingAttachment = null;
 
 // ---------------------------------------------------------------------------
@@ -63,11 +63,39 @@ function appendBubble(text, role, attachmentLabel) {
     textNode.innerHTML = renderMarkdownLite(text);
     bubble.appendChild(textNode);
   }
+  if (role === "bot" && text) {
+    const bookmarkBtn = document.createElement("button");
+    bookmarkBtn.type = "button";
+    bookmarkBtn.className = "bubble-bookmark-btn";
+    bookmarkBtn.setAttribute("aria-label", "Save this answer");
+    bookmarkBtn.innerHTML = "&#9734;";
+    bookmarkBtn.addEventListener("click", () => saveBookmark(text, bookmarkBtn));
+    bubble.appendChild(bookmarkBtn);
+  }
   messagesEl.appendChild(bubble);
   if (prefOn("rsu_pref_auto_scroll")) {
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
   return bubble;
+}
+
+async function saveBookmark(text, btn) {
+  if (btn.disabled) return;
+  btn.disabled = true;
+  try {
+    const res = await fetch("/bookmarks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ item_type: "answer", reference_id: sessionId, title: text }),
+    });
+    if (!res.ok) throw new Error();
+    btn.innerHTML = "&#9733;";
+    btn.classList.add("saved");
+    btn.setAttribute("aria-label", "Saved to Bookmarks");
+  } catch (err) {
+    btn.disabled = false;
+    showToast("Couldn't save that bookmark. Try again.");
+  }
 }
 
 // ---------------------------------------------------------------------------

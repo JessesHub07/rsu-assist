@@ -18,11 +18,14 @@ from storage import (  # noqa: E402
     PasswordChangeError,
     SignupError,
     activate_student,
+    add_bookmark,
     authenticate_student,
     change_password,
     compute_level,
     create_project,
+    delete_bookmark,
     delete_project,
+    get_bookmarks_for_user,
     get_documents_for_project,
     get_documents_for_user,
     get_history,
@@ -312,6 +315,39 @@ def project_detail(project_id):
         "sessions": get_sessions_for_project(project_id, user["id"]),
         "documents": get_documents_for_project(project_id, user["id"]),
     })
+
+
+@app.route("/bookmarks-ui")
+def bookmarks_ui():
+    return render_template("bookmarks.html", active="bookmarks")
+
+
+@app.route("/bookmarks", methods=["GET", "POST"])
+def bookmarks():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to use bookmarks."}), 401
+
+    if request.method == "POST":
+        data = request.get_json(force=True)
+        item_type = data.get("item_type") or "answer"
+        title = (data.get("title") or "").strip()
+        if not title:
+            return jsonify({"error": "Nothing to save."}), 400
+        reference_id = data.get("reference_id")
+        add_bookmark(user["id"], item_type, reference_id, title)
+        return jsonify({"success": True})
+
+    return jsonify({"bookmarks": get_bookmarks_for_user(user["id"])})
+
+
+@app.route("/bookmarks/<int:bookmark_id>", methods=["DELETE"])
+def bookmark_detail(bookmark_id):
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to use bookmarks."}), 401
+    delete_bookmark(bookmark_id, user["id"])
+    return jsonify({"success": True})
 
 
 @app.route("/chat-ui")

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Bookmarks - RSU Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='bookmarks.css') }}">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    {% include "_sidebar.html" %}
+
+    <div class="chat-app">
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+          <span class="header-title-pill">RSU Assist</span>
+        </div>
+        <img src="{{ url_for('static', filename='rsu-logo-2.png') }}" alt="RSU crest" class="header-logo">
+      </header>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="bookmarks-body">
+        <h1 class="bookmarks-heading">Bookmarks</h1>
+        <p class="bookmarks-subheading">Answers you've saved from your conversations.</p>
+
+        <div class="bookmarks-list" id="bookmarksList"></div>
+
+        <p class="bookmarks-empty" id="bookmarksEmpty" hidden>
+          No bookmarks yet. Tap the star under any of RSU Assist's replies to save it here.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='bookmarks.js') }}"></script>
+</body>
+</html>

@@ -504,3 +504,10 @@ def get_bookmarks_for_user(user_id):
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+def delete_bookmark(bookmark_id, user_id):
+    conn = get_conn()
+    conn.execute("DELETE FROM bookmarks WHERE id = ? AND user_id = ?", (bookmark_id, user_id))
+    conn.commit()
+    conn.close()
