@@ -13,6 +13,7 @@ generate the actual reply (see llm.py).
 import json
 import os
 import pickle
+import threading
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -58,6 +59,10 @@ class VectorStore:
         self.texts = []
         self.metadatas = []
         self.embeddings = None  # shape (n, dim)
+        # gunicorn now runs threaded workers, so two requests (e.g. two
+        # students uploading at once, or an upload racing a KB reseed) can
+        # call add_documents concurrently, this guards that mutation.
+        self._write_lock = threading.Lock()
         self._load()
 
     @property
@@ -120,15 +125,18 @@ class VectorStore:
     def add_documents(self, texts, metadatas, persist=True):
         if not texts:
             return
+        # Encoding doesn't touch shared state, only the lock below does, so
+        # it can happen outside the lock and overlap across threads.
         new_embeddings = self.model.encode(texts, normalize_embeddings=True)
-        self.texts.extend(texts)
-        self.metadatas.extend(metadatas)
-        if self.embeddings is None or len(self.embeddings) == 0:
-            self.embeddings = np.array(new_embeddings)
-        else:
-            self.embeddings = np.vstack([self.embeddings, new_embeddings])
-        if persist:
-            self._save()
+        with self._write_lock:
+            self.texts.extend(texts)
+            self.metadatas.extend(metadatas)
+            if self.embeddings is None or len(self.embeddings) == 0:
+                self.embeddings = np.array(new_embeddings)
+            else:
+                self.embeddings = np.vstack([self.embeddings, new_embeddings])
+            if persist:
+                self._save()
 
     def add_pdf(self, filename, full_text, user_id=None):
         chunks = chunk_text(full_text)
@@ -166,10 +174,13 @@ class VectorStore:
 
 
 _store = None
+_store_init_lock = threading.Lock()
 
 
 def get_store():
     global _store
     if _store is None:
-        _store = VectorStore()
+        with _store_init_lock:
+            if _store is None:
+                _store = VectorStore()
     return _store
