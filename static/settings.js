@@ -1,6 +1,30 @@
-// Settings page: account (name/email) and theme. Applies theme changes via
-// the shared window.applyTheme() from sidebar.js so every other page stays
-// in sync.
+// Settings page: account details + password, appearance (theme), and chat
+// preferences. Theme applies via the shared window.applyTheme() from
+// sidebar.js so every other page stays in sync. Chat preferences are
+// stored in localStorage and read by chat.js/sidebar.js on this device.
+
+// ---------------------------------------------------------------------------
+// Sub-nav panel switching
+// ---------------------------------------------------------------------------
+
+const subnavItems = document.querySelectorAll(".settings-subnav-item[data-panel]");
+const panels = document.querySelectorAll(".settings-panel");
+
+subnavItems.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    subnavItems.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    panels.forEach((p) => { p.hidden = p.id !== `panel-${btn.dataset.panel}`; });
+  });
+});
+
+document.querySelectorAll(".settings-subnav-soon").forEach((btn) => {
+  btn.addEventListener("click", () => showToast(`${btn.dataset.label} settings are coming soon.`));
+});
+
+// ---------------------------------------------------------------------------
+// Theme
+// ---------------------------------------------------------------------------
 
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 
@@ -30,6 +54,7 @@ const profileEmail = document.getElementById("profileEmail");
 const readonlyFields = document.getElementById("readonlyFields");
 const profileSaveStatus = document.getElementById("profileSaveStatus");
 const profileSaveBtn = document.getElementById("profileSaveBtn");
+const passwordSection = document.getElementById("passwordSection");
 
 async function initAccountSection() {
   const user = await loadSidebarUser();
@@ -40,14 +65,21 @@ async function initAccountSection() {
     return;
   }
 
+  document.getElementById("settingsAvatar").textContent = initials(user.full_name);
+  document.getElementById("settingsProfileName").textContent = user.full_name;
+
   profileFullName.value = user.full_name || "";
   profileEmail.value = user.email || "";
 
   if (user.user_type === "student") {
+    document.getElementById("settingsProfileMeta").textContent = `${user.matric_number} · ${user.department} · ${user.level}L`;
     readonlyFields.hidden = false;
     document.getElementById("profileMatric").value = user.matric_number || "";
     document.getElementById("profileDepartment").value = user.department || "";
     document.getElementById("profileLevel").value = `${user.level}L`;
+    passwordSection.hidden = false;
+  } else {
+    document.getElementById("settingsProfileMeta").textContent = "Guest account";
   }
 }
 
@@ -77,11 +109,86 @@ profileForm.addEventListener("submit", async (e) => {
       profileSaveStatus.textContent = "Saved.";
       document.getElementById("userName").textContent = data.user.full_name;
       document.getElementById("userAvatar").textContent = initials(data.user.full_name);
+      document.getElementById("settingsProfileName").textContent = data.user.full_name;
+      document.getElementById("settingsAvatar").textContent = initials(data.user.full_name);
     }
   } catch (err) {
     profileSaveStatus.textContent = "Couldn't reach the server.";
   }
   profileSaveBtn.disabled = false;
 });
+
+// ---------------------------------------------------------------------------
+// Change password
+// ---------------------------------------------------------------------------
+
+const passwordForm = document.getElementById("passwordForm");
+const passwordSaveStatus = document.getElementById("passwordSaveStatus");
+const passwordSaveBtn = document.getElementById("passwordSaveBtn");
+
+passwordForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const current_password = document.getElementById("currentPassword").value;
+  const new_password = document.getElementById("newPassword").value;
+  const confirm_password = document.getElementById("confirmNewPassword").value;
+
+  if (new_password.length < 8) {
+    passwordSaveStatus.textContent = "New password must be at least 8 characters.";
+    return;
+  }
+  if (new_password !== confirm_password) {
+    passwordSaveStatus.textContent = "New passwords don't match.";
+    return;
+  }
+
+  passwordSaveBtn.disabled = true;
+  passwordSaveStatus.textContent = "Updating...";
+
+  try {
+    const res = await fetch("/change-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ current_password, new_password, confirm_password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      passwordSaveStatus.textContent = data.error || "Couldn't update your password.";
+    } else {
+      passwordSaveStatus.textContent = "Password updated.";
+      passwordForm.reset();
+    }
+  } catch (err) {
+    passwordSaveStatus.textContent = "Couldn't reach the server.";
+  }
+  passwordSaveBtn.disabled = false;
+});
+
+// ---------------------------------------------------------------------------
+// Chat preferences
+// ---------------------------------------------------------------------------
+
+const CHAT_PREF_TOGGLES = [
+  { id: "toggleSaveHistory", key: "rsu_pref_save_history" },
+  { id: "toggleAutoScroll", key: "rsu_pref_auto_scroll" },
+  { id: "toggleRememberContext", key: "rsu_pref_remember_context" },
+  { id: "toggleSuggestedQuestions", key: "rsu_pref_suggested_questions" },
+];
+
+CHAT_PREF_TOGGLES.forEach(({ id, key }) => {
+  const btn = document.getElementById(id);
+  const setState = (on) => {
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-checked", on);
+  };
+  setState(prefOn(key));
+  btn.addEventListener("click", () => {
+    const next = !prefOn(key);
+    localStorage.setItem(key, next);
+    setState(next);
+  });
+});
+
+document.getElementById("settingsContextNote").textContent =
+  "Chats are automatically scoped to your department and level, this improves answer accuracy for your specific curriculum.";
 
 initAccountSection();

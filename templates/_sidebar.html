@@ -10,13 +10,14 @@
     </div>
   </div>
 
+  <button type="button" class="new-chat-btn" id="newChatBtn">
+    <span class="new-chat-icon" aria-hidden="true">+</span>
+    New chat
+  </button>
+
   <nav class="sidebar-nav">
     <a href="/home-ui" class="nav-item {{ 'active' if active == 'home' else '' }}">Home</a>
-
-    <div class="nav-row">
-      <a href="/chat-ui" class="nav-item nav-item-flex {{ 'active' if active == 'chat' else '' }}">Chat</a>
-      <button type="button" class="nav-new-chat-btn" id="newChatBtn" title="New chat" aria-label="Start a new chat">+</button>
-    </div>
+    <a href="/chat-ui" class="nav-item {{ 'active' if active == 'chat' else '' }}">Chat</a>
 
     <button type="button" class="nav-item nav-expandable" id="historyToggle">
       Chat History

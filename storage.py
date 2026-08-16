@@ -204,6 +204,30 @@ def authenticate_student(identifier, full_name, password):
     return dict(row)
 
 
+class PasswordChangeError(Exception):
+    pass
+
+
+def change_password(user_id, current_password, new_password):
+    conn = get_conn()
+    row = conn.execute("SELECT password_hash FROM users WHERE id = ?", (user_id,)).fetchone()
+
+    if not row or not row["password_hash"]:
+        conn.close()
+        raise PasswordChangeError("This account doesn't have a password set.")
+
+    if not check_password_hash(row["password_hash"], current_password):
+        conn.close()
+        raise PasswordChangeError("Current password is incorrect.")
+
+    conn.execute(
+        "UPDATE users SET password_hash = ? WHERE id = ?",
+        (generate_password_hash(new_password), user_id),
+    )
+    conn.commit()
+    conn.close()
+
+
 def get_or_create_guest(google_id, email, full_name):
     conn = get_conn()
     row = conn.execute(

@@ -56,7 +56,9 @@ function appendBubble(text, role, attachmentLabel) {
     bubble.appendChild(textNode);
   }
   messagesEl.appendChild(bubble);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  if (prefOn("rsu_pref_auto_scroll")) {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
   return bubble;
 }
 
@@ -162,7 +164,9 @@ async function initChatPage() {
     greetingSubtext.textContent = "How can I help you today?";
   }
 
-  renderChips(chips);
+  if (prefOn("rsu_pref_suggested_questions")) {
+    renderChips(chips);
+  }
 
   if (sessionId) {
     const loaded = await tryLoadSession(sessionId);
@@ -237,6 +241,8 @@ formEl.addEventListener("submit", async (e) => {
   formData.append("message", message);
   if (sessionId) formData.append("session_id", sessionId);
   if (attachment) formData.append("attachment", attachment);
+  formData.append("save_history", prefOn("rsu_pref_save_history"));
+  formData.append("remember_context", prefOn("rsu_pref_remember_context"));
 
   try {
     const res = await fetch("/chat", { method: "POST", body: formData });

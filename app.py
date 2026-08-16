@@ -15,9 +15,11 @@ from llm import generate_reply  # noqa: E402  (must run after load_dotenv)
 from rag import KB_PATH, get_store, is_visible  # noqa: E402
 from storage import (  # noqa: E402
     LoginError,
+    PasswordChangeError,
     SignupError,
     activate_student,
     authenticate_student,
+    change_password,
     compute_level,
     get_documents_for_user,
     get_history,
@@ -207,6 +209,30 @@ def profile():
     })
 
 
+@app.route("/change-password", methods=["POST"])
+def change_password_route():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in to change your password."}), 401
+
+    data = request.get_json(force=True)
+    current_password = data.get("current_password") or ""
+    new_password = data.get("new_password") or ""
+    confirm_password = data.get("confirm_password") or ""
+
+    if len(new_password) < 8:
+        return jsonify({"error": "New password must be at least 8 characters."}), 400
+    if new_password != confirm_password:
+        return jsonify({"error": "New passwords don't match."}), 400
+
+    try:
+        change_password(user["id"], current_password, new_password)
+    except PasswordChangeError as e:
+        return jsonify({"error": str(e)}), 400
+
+    return jsonify({"success": True})
+
+
 @app.route("/chat-ui")
 def chat_ui():
     return render_template("index.html", active="chat")
@@ -314,6 +340,11 @@ def chat():
     message = (request.form.get("message") or "").strip()
     session_id = request.form.get("session_id") or str(uuid.uuid4())
     attachment_file = request.files.get("attachment")
+    # Both preferences default on, matching the toggles' default state in
+    # Settings > Chat; the client only sends "false" when a student has
+    # actually turned one off.
+    remember_context = request.form.get("remember_context", "true") == "true"
+    save_history = request.form.get("save_history", "true") == "true"
 
     attachment = None
     if attachment_file and attachment_file.filename:
@@ -334,15 +365,16 @@ def chat():
 
     store = get_store()
     retrieved = store.search(message, department=department, level=level, user_id=user_id) if message else []
-    history = get_history(session_id)
+    history = get_history(session_id) if remember_context else []
 
     reply = generate_reply(
         message or "What can you tell me about this attachment?",
         retrieved, history, attachment=attachment, viewer=user,
     )
 
-    save_message(session_id, "user", saved_message, user_id=user_id)
-    save_message(session_id, "assistant", reply, user_id=user_id)
+    if save_history:
+        save_message(session_id, "user", saved_message, user_id=user_id)
+        save_message(session_id, "assistant", reply, user_id=user_id)
 
     return jsonify({"reply": reply, "session_id": session_id})
 

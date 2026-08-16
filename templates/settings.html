@@ -26,49 +26,137 @@
       <div class="settings-body">
         <h1 class="settings-heading">Settings</h1>
 
-        <div class="settings-section">
-          <h2>Account</h2>
-          <p class="settings-section-desc">Update your name and email. Matric number, department, and level are set by your department and can't be changed here.</p>
-          <form id="profileForm" class="settings-form">
-            <label class="settings-field">
-              <span>Full name</span>
-              <input type="text" id="profileFullName" autocomplete="name">
-            </label>
-            <label class="settings-field">
-              <span>Email</span>
-              <input type="email" id="profileEmail" autocomplete="email">
-            </label>
-            <div id="readonlyFields" hidden>
-              <label class="settings-field">
-                <span>Matric number</span>
-                <input type="text" id="profileMatric" disabled>
-              </label>
-              <label class="settings-field">
-                <span>Department</span>
-                <input type="text" id="profileDepartment" disabled>
-              </label>
-              <label class="settings-field">
-                <span>Level</span>
-                <input type="text" id="profileLevel" disabled>
-              </label>
-            </div>
-            <p class="settings-save-status" id="profileSaveStatus"></p>
-            <button type="submit" class="settings-save-btn" id="profileSaveBtn">Save changes</button>
-          </form>
-        </div>
+        <div class="settings-layout">
+          <nav class="settings-subnav" id="settingsSubnav">
+            <button type="button" class="settings-subnav-item active" data-panel="account">Account</button>
+            <button type="button" class="settings-subnav-item" data-panel="appearance">Appearance</button>
+            <button type="button" class="settings-subnav-item" data-panel="chat">Chat</button>
+            <button type="button" class="settings-subnav-item settings-subnav-soon" data-label="Documents">Documents</button>
+            <button type="button" class="settings-subnav-item settings-subnav-soon" data-label="Security">Security</button>
+          </nav>
 
-        <div class="settings-section">
-          <h2>Theme</h2>
-          <p class="settings-section-desc">Choose how RSU Assist looks on this device.</p>
-          <div class="theme-options" id="themeOptions">
-            <button type="button" class="theme-option" data-theme="light">
-              <span class="theme-swatch theme-swatch-light" aria-hidden="true"></span>
-              Light
-            </button>
-            <button type="button" class="theme-option" data-theme="dark">
-              <span class="theme-swatch theme-swatch-dark" aria-hidden="true"></span>
-              Dark
-            </button>
+          <div class="settings-panels">
+
+            <section class="settings-panel" id="panel-account">
+              <div class="settings-profile-card">
+                <div class="settings-profile-avatar" id="settingsAvatar"></div>
+                <div>
+                  <div class="settings-profile-name" id="settingsProfileName">-</div>
+                  <div class="settings-profile-meta" id="settingsProfileMeta"></div>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h2>Account details</h2>
+                <p class="settings-section-desc">Update your name and email. Matric number, department, and level are set by your department and can't be changed here.</p>
+                <form id="profileForm" class="settings-form">
+                  <label class="settings-field">
+                    <span>Full name</span>
+                    <input type="text" id="profileFullName" autocomplete="name">
+                  </label>
+                  <label class="settings-field">
+                    <span>Email</span>
+                    <input type="email" id="profileEmail" autocomplete="email">
+                  </label>
+                  <div id="readonlyFields" hidden>
+                    <label class="settings-field">
+                      <span>Matric number</span>
+                      <input type="text" id="profileMatric" disabled>
+                    </label>
+                    <label class="settings-field">
+                      <span>Department</span>
+                      <input type="text" id="profileDepartment" disabled>
+                    </label>
+                    <label class="settings-field">
+                      <span>Level</span>
+                      <input type="text" id="profileLevel" disabled>
+                    </label>
+                  </div>
+                  <p class="settings-save-status" id="profileSaveStatus"></p>
+                  <button type="submit" class="settings-save-btn" id="profileSaveBtn">Save changes</button>
+                </form>
+              </div>
+
+              <div class="settings-section" id="passwordSection" hidden>
+                <h2>Change password</h2>
+                <p class="settings-section-desc">Choose a new password for signing in.</p>
+                <form id="passwordForm" class="settings-form">
+                  <label class="settings-field">
+                    <span>Current password</span>
+                    <input type="password" id="currentPassword" autocomplete="current-password">
+                  </label>
+                  <label class="settings-field">
+                    <span>New password</span>
+                    <input type="password" id="newPassword" autocomplete="new-password">
+                  </label>
+                  <label class="settings-field">
+                    <span>Confirm new password</span>
+                    <input type="password" id="confirmNewPassword" autocomplete="new-password">
+                  </label>
+                  <p class="settings-save-status" id="passwordSaveStatus"></p>
+                  <button type="submit" class="settings-save-btn" id="passwordSaveBtn">Update password</button>
+                </form>
+              </div>
+            </section>
+
+            <section class="settings-panel" id="panel-appearance" hidden>
+              <div class="settings-section">
+                <h2>Theme</h2>
+                <p class="settings-section-desc">Choose how RSU Assist looks on this device.</p>
+                <div class="theme-options" id="themeOptions">
+                  <button type="button" class="theme-option" data-theme="light">
+                    <span class="theme-swatch theme-swatch-light" aria-hidden="true"></span>
+                    Light
+                  </button>
+                  <button type="button" class="theme-option" data-theme="dark">
+                    <span class="theme-swatch theme-swatch-dark" aria-hidden="true"></span>
+                    Dark
+                  </button>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h2>Language</h2>
+                <p class="settings-section-desc">RSU Assist is currently only available in English. More languages coming soon.</p>
+                <input type="text" class="settings-locked-field" value="English" disabled>
+              </div>
+            </section>
+
+            <section class="settings-panel" id="panel-chat" hidden>
+              <div class="settings-section">
+                <h2>Chat preferences</h2>
+                <div class="settings-toggle-row">
+                  <div>
+                    <div class="settings-toggle-label">Save chat history</div>
+                    <div class="settings-toggle-desc">Store your conversations so you can pick up where you left off</div>
+                  </div>
+                  <button type="button" class="settings-toggle" id="toggleSaveHistory" role="switch"></button>
+                </div>
+                <div class="settings-toggle-row">
+                  <div>
+                    <div class="settings-toggle-label">Auto-scroll</div>
+                    <div class="settings-toggle-desc">Automatically scroll to the latest message</div>
+                  </div>
+                  <button type="button" class="settings-toggle" id="toggleAutoScroll" role="switch"></button>
+                </div>
+                <div class="settings-toggle-row">
+                  <div>
+                    <div class="settings-toggle-label">Remember context</div>
+                    <div class="settings-toggle-desc">Let the assistant reference earlier messages in the same conversation</div>
+                  </div>
+                  <button type="button" class="settings-toggle" id="toggleRememberContext" role="switch"></button>
+                </div>
+                <div class="settings-toggle-row">
+                  <div>
+                    <div class="settings-toggle-label">Suggested questions</div>
+                    <div class="settings-toggle-desc">Show prompt suggestions at the start of a new chat</div>
+                  </div>
+                  <button type="button" class="settings-toggle" id="toggleSuggestedQuestions" role="switch"></button>
+                </div>
+              </div>
+              <p class="settings-context-note" id="settingsContextNote"></p>
+            </section>
+
           </div>
         </div>
       </div>

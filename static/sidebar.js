@@ -20,6 +20,16 @@ function applyTheme(next) {
 window.applyTheme = applyTheme;
 
 // ---------------------------------------------------------------------------
+// Chat preferences (set on the Settings > Chat panel, read here and in
+// chat.js). Stored per-device, on unless explicitly turned off.
+// ---------------------------------------------------------------------------
+
+function prefOn(key) {
+  return localStorage.getItem(key) !== "false";
+}
+window.prefOn = prefOn;
+
+// ---------------------------------------------------------------------------
 // Sidebar collapse (desktop) / mobile drawer
 // ---------------------------------------------------------------------------
 

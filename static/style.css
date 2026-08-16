@@ -138,31 +138,28 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
 
 .nav-item.nav-soon { color: var(--sidebar-muted); }
 
-.nav-row {
+.new-chat-btn {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+  width: calc(100% - 20px);
+  margin: 12px 10px 4px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: var(--green);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.nav-item-flex { flex: 1; min-width: 0; }
+.new-chat-btn:hover { background: var(--green-dark); }
 
-.nav-new-chat-btn {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255,255,255,0.06);
-  color: var(--sidebar-text);
+.new-chat-icon {
   font-size: 16px;
   line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-
-.nav-new-chat-btn:hover { background: rgba(255,255,255,0.14); }
 
 .chevron { font-size: 10px; transition: transform 0.15s ease; }
 .chevron.open { transform: rotate(180deg); }
