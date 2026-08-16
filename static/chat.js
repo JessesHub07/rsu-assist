@@ -28,6 +28,18 @@ function showMessages() {
   messagesEl.hidden = false;
 }
 
+// Minimal, safe markdown: escapes HTML first (so nothing in the text can
+// inject markup), then turns **bold** into <strong>. Nothing else from
+// markdown is supported on purpose, this is just enough to match what
+// Claude's replies actually use.
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function renderMarkdownLite(text) {
+  return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
 function appendBubble(text, role, attachmentLabel) {
   showMessages();
   const bubble = document.createElement("div");
@@ -40,7 +52,7 @@ function appendBubble(text, role, attachmentLabel) {
   }
   if (text) {
     const textNode = document.createElement("div");
-    textNode.textContent = text;
+    textNode.innerHTML = renderMarkdownLite(text);
     bubble.appendChild(textNode);
   }
   messagesEl.appendChild(bubble);
@@ -111,6 +123,12 @@ async function tryLoadSession(id) {
 }
 window.tryLoadSession = tryLoadSession;
 
+function startNewChat() {
+  sessionId = null;
+  showEmptyState();
+}
+window.startNewChat = startNewChat;
+
 // ---------------------------------------------------------------------------
 // Current user / greeting
 // ---------------------------------------------------------------------------
@@ -132,7 +150,7 @@ async function initChatPage() {
     const firstName = user.full_name.split(" ")[0];
     headerTitle.textContent = "RSU Assist";
     greetingHeading.textContent = `Hi ${firstName}`;
-    greetingSubtext.textContent = "What would you like to know today?";
+    greetingSubtext.textContent = "How can I help you today?";
 
     if (user.user_type === "student") {
       headerSubtitle.textContent = `${user.department} · ${user.level}L`;
@@ -147,7 +165,7 @@ async function initChatPage() {
     }
   } else {
     greetingHeading.textContent = "Welcome to RSU Assist";
-    greetingSubtext.textContent = "What would you like to know today?";
+    greetingSubtext.textContent = "How can I help you today?";
   }
 
   renderChips(chips);

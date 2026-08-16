@@ -186,3 +186,17 @@ historyToggle.addEventListener("click", () => {
 document.querySelectorAll(".nav-soon").forEach((btn) => {
   btn.addEventListener("click", () => showToast(`${btn.dataset.label} is coming soon.`));
 });
+
+// ---------------------------------------------------------------------------
+// New chat
+// ---------------------------------------------------------------------------
+
+document.getElementById("newChatBtn").addEventListener("click", () => {
+  localStorage.removeItem("rsu_session_id");
+  if (typeof window.startNewChat === "function") {
+    window.startNewChat();
+    closeMobileSidebar();
+  } else {
+    window.location.href = "/chat-ui";
+  }
+});

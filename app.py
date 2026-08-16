@@ -2,6 +2,7 @@ import base64
 import json
 import os
 import uuid
+from datetime import timedelta
 
 import pdfplumber
 from authlib.integrations.flask_client import OAuth
@@ -31,6 +32,7 @@ from storage import (  # noqa: E402
 
 app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 ALLOWED_EXTENSIONS = {".pdf"}
 
@@ -87,6 +89,7 @@ def login():
     except LoginError as e:
         return jsonify({"error": str(e)}), 401
 
+    session.permanent = True
     session["user_id"] = user["id"]
     return jsonify({"success": True, "redirect": "/chat-ui"})
 
@@ -111,6 +114,7 @@ def signup():
     except SignupError as e:
         return jsonify({"error": str(e)}), 400
 
+    session.permanent = True
     session["user_id"] = user["id"]
     return jsonify({"success": True, "redirect": "/chat-ui"})
 
@@ -137,6 +141,7 @@ def auth_google_callback():
         email=userinfo.get("email"),
         full_name=userinfo.get("name") or userinfo.get("email"),
     )
+    session.permanent = True
     session["user_id"] = user["id"]
     return redirect("/chat-ui")
 
@@ -292,7 +297,10 @@ def chat():
     retrieved = store.search(message, department=department, level=level, user_id=user_id) if message else []
     history = get_history(session_id)
 
-    reply = generate_reply(message or "What can you tell me about this attachment?", retrieved, history, attachment=attachment)
+    reply = generate_reply(
+        message or "What can you tell me about this attachment?",
+        retrieved, history, attachment=attachment, viewer=user,
+    )
 
     save_message(session_id, "user", saved_message, user_id=user_id)
     save_message(session_id, "assistant", reply, user_id=user_id)

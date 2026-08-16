@@ -22,11 +22,16 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("rsu_theme", next);
 });
 
+const EYE_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7.5 11-7.5S23 12 23 12s-4 7.5-11 7.5S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const EYE_OFF_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.4 17.4C15.7 18.5 13.9 19 12 19c-7 0-11-7-11-7a19.4 19.4 0 0 1 5-5.9M9.9 4.6A10.6 10.6 0 0 1 12 4.5c7 0 11 7.5 11 7.5a19.3 19.3 0 0 1-3.1 4.1M14.1 14.1a3 3 0 1 1-4.2-4.2"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
 document.querySelectorAll(".toggle-password").forEach((btn) => {
+  btn.innerHTML = EYE_ICON;
   btn.addEventListener("click", () => {
     const input = document.getElementById(btn.dataset.target);
     const isHidden = input.type === "password";
     input.type = isHidden ? "text" : "password";
+    btn.innerHTML = isHidden ? EYE_OFF_ICON : EYE_ICON;
     btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
   });
 });

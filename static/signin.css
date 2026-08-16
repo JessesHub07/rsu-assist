@@ -290,9 +290,17 @@ html[data-theme="dark"] .field input {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 15px;
-  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--subtext-light);
+  opacity: 0.75;
 }
+
+html[data-theme="dark"] .toggle-password { color: var(--subtext-dark); }
+
+.toggle-password:hover { opacity: 1; }
 
 .form-row {
   display: flex;

@@ -12,7 +12,11 @@
 
   <nav class="sidebar-nav">
     <a href="/home-ui" class="nav-item {{ 'active' if active == 'home' else '' }}">Home</a>
-    <a href="/chat-ui" class="nav-item {{ 'active' if active == 'chat' else '' }}">Chat</a>
+
+    <div class="nav-row">
+      <a href="/chat-ui" class="nav-item nav-item-flex {{ 'active' if active == 'chat' else '' }}">Chat</a>
+      <button type="button" class="nav-new-chat-btn" id="newChatBtn" title="New chat" aria-label="Start a new chat">+</button>
+    </div>
 
     <button type="button" class="nav-item nav-expandable" id="historyToggle">
       Chat History
