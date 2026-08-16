@@ -136,8 +136,6 @@ window.startNewChat = startNewChat;
 async function initChatPage() {
   const greetingHeading = document.getElementById("greetingHeading");
   const greetingSubtext = document.getElementById("greetingSubtext");
-  const headerTitle = document.getElementById("headerTitle");
-  const headerSubtitle = document.getElementById("headerSubtitle");
   let chips = [
     "How do I apply to RSU?",
     "What faculties does RSU have?",
@@ -148,20 +146,16 @@ async function initChatPage() {
 
   if (user) {
     const firstName = user.full_name.split(" ")[0];
-    headerTitle.textContent = "RSU Assist";
     greetingHeading.textContent = `Hi ${firstName}`;
     greetingSubtext.textContent = "How can I help you today?";
 
     if (user.user_type === "student") {
-      headerSubtitle.textContent = `${user.department} · ${user.level}L`;
       chips = [
         `What are my ${user.level}L courses this semester?`,
         "When are my exams?",
         "What's the SIWES process for me?",
         "Who is the HOD?",
       ];
-    } else {
-      headerSubtitle.textContent = "Browsing as a guest";
     }
   } else {
     greetingHeading.textContent = "Welcome to RSU Assist";

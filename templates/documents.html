@@ -14,13 +14,11 @@
 
     <div class="chat-app">
       <header class="chat-header">
-        <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
-        <div class="avatar">RSU</div>
-        <div class="header-text">
-          <div class="title">My Documents</div>
-          <div class="subtitle" id="headerSubtitle">Private to your account</div>
+        <div class="header-left">
+          <button class="collapse-toggle" id="collapseToggle" type="button" aria-label="Collapse sidebar">&#9666;</button>
+          <span class="header-title-pill">RSU Assist</span>
         </div>
-        <button class="theme-toggle" id="themeToggle" type="button">Dark Mode</button>
+        <img src="{{ url_for('static', filename='rsu-logo-2.png') }}" alt="RSU crest" class="header-logo">
       </header>
 
       <div id="toast" class="toast" hidden></div>

@@ -168,6 +168,11 @@ def home_ui():
     return render_template("home.html", active="home")
 
 
+@app.route("/settings-ui")
+def settings_ui():
+    return render_template("settings.html", active="settings")
+
+
 @app.route("/chat-ui")
 def chat_ui():
     return render_template("index.html", active="chat")

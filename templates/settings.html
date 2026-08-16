@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark">
-<title>FAQs - RSU Assist</title>
+<title>Settings - RSU Assist</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='faqs.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -23,26 +23,28 @@
 
       <div id="toast" class="toast" hidden></div>
 
-      <div class="faqs-body">
-        <div class="faqs-search-row">
-          <input id="faqSearch" type="text" placeholder="Search FAQs..." autocomplete="off">
-        </div>
+      <div class="settings-body">
+        <h1 class="settings-heading">Settings</h1>
 
-        <div class="faqs-pills" id="faqCategoryPills"></div>
-
-        <div class="faqs-list" id="faqList"></div>
-
-        <p class="faqs-empty" id="faqEmpty" hidden>No questions match your search.</p>
-
-        <div class="faqs-fallback">
-          <p>Didn't find what you needed?</p>
-          <button type="button" class="faqs-ask-btn" id="faqAskBtn">Ask in chat</button>
+        <div class="settings-section">
+          <h2>Theme</h2>
+          <p class="settings-section-desc">Choose how RSU Assist looks on this device.</p>
+          <div class="theme-options" id="themeOptions">
+            <button type="button" class="theme-option" data-theme="light">
+              <span class="theme-swatch theme-swatch-light" aria-hidden="true"></span>
+              Light
+            </button>
+            <button type="button" class="theme-option" data-theme="dark">
+              <span class="theme-swatch theme-swatch-dark" aria-hidden="true"></span>
+              Dark
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
-  <script src="{{ url_for('static', filename='faqs.js') }}"></script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
 </body>
 </html>
