@@ -519,7 +519,7 @@ def faqs():
         categories.setdefault(category, []).append(item)
 
     ordered_names = ["About the Department", "Courses & Curriculum", "Registration & Exams",
-                      "Fees", "SIWES & Final Year Project", "Graduation"]
+                      "Fees", "SIWES & Final Year Project", "Graduation", "Events & Activities"]
     result = [
         {"category": name, "items": categories[name]}
         for name in ordered_names if name in categories

@@ -53,6 +53,7 @@ CAT_EXAMS = "Registration & Exams"
 CAT_SIWES = "SIWES & Final Year Project"
 CAT_GRAD = "Graduation"
 CAT_FEES = "Fees"
+CAT_ACTIVITIES = "Events & Activities"
 
 dept_wide("hod_info",
     ["who is the HOD", "who is the head of department", "who is the current HOD of Computer Engineering", "hod name"],
@@ -129,6 +130,26 @@ dept_wide("degree_classification",
 dept_wide("academic_calendar_key_dates",
     ["when does the semester start", "when is resumption", "academic calendar", "when does school resume", "when does the session end", "convocation date"],
     ["Key dates for the 2025/2026 academic session: Resumption and online registration begins Monday 3rd November 2025. First semester lectures begin Monday 10th November 2025. 37th/38th Combined Convocation Ceremony: Friday 5th - Saturday 6th December 2025. Christmas break: Saturday 20th December 2025 - Saturday 3rd January 2026. Matriculation Ceremony: Wednesday 28th January 2026. Second semester lectures run Monday 6th April - Friday 26th June 2026. Students' Week: Monday 8th - Saturday 13th June 2026. 2025/2026 session ends Friday 25th September 2026. This calendar was approved by the Senate at its 324th Regular Meeting (30th October 2025) and circulated by the Registrar, Ref RSU/REG/4/S.9/VOL.4/158, dated 12th November 2025."], CAT_EXAMS)
+
+# ---------------------------------------------------------------------------
+# Events & Activities
+# ---------------------------------------------------------------------------
+
+dept_wide("final_year_seminar",
+    ["what is CEN 581 project seminar", "what happens in the project seminar course", "how does the seminar course work"],
+    ["CEN 581: Project Seminar (2 units, Year 5 First Semester) is designed to let students and staff discuss project, research, and industrial topics. In the process, students learn how to present ideas and write a technical report."], CAT_ACTIVITIES)
+
+dept_wide("freshers_orientation",
+    ["when is freshers orientation", "what happens at orientation", "orientation schedule", "when is fresher orientation"],
+    ["Fresher's Orientation Day One is Monday, 2nd February 2026: Fresher's Orientation at 12:00 PM, followed by a Worship Experience at 2:00 PM, both at CIBN Hall (behind the basketball court)."], CAT_ACTIVITIES)
+
+dept_wide("aces_week",
+    ["what is ACES week", "when is aces week", "aces week schedule", "what is aces"],
+    ["ACES Week 2026, organized by the Association of Computer Engineering Students (ACES), runs Monday 2nd to Friday 6th February 2026 under the theme 'Emergence'. Schedule: Monday - Movie Night, Tuesday - Tech Workshop, Wednesday - Game Fest, Thursday - Next Gen ACES, Friday - Dinner/Award Night. Follow @aces_rsu for updates, hashtags #ACESWeek2026 #Emergence #RSUACES #TechAndVibes."], CAT_ACTIVITIES)
+
+dept_wide("digital_privacy_campaign",
+    ["what is DPAC", "digital privacy awareness campaign", "when is the privacy campaign", "how do I register for DPAC"],
+    ["The Digital Privacy Awareness Campaign (DPAC) is on Friday, 24th July 2026. It covers protecting personal information, staying safe online, understanding digital rights, managing your digital footprint, and avoiding scams and identity theft. Participants are also onboarded into the free Virtual Privacy Academy (VPA) data privacy certification programme, with giveaways, refreshments, and networking opportunities. Register at https://forms.cloud.microsoft/r/ea53dzMqV1."], CAT_ACTIVITIES)
 
 # ---------------------------------------------------------------------------
 # Fees (from the BMAS Programme Handbook's Departmental Fees extract)

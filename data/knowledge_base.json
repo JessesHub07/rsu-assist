@@ -336,6 +336,69 @@
       ]
     },
     {
+      "tag": "final_year_seminar",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Events & Activities",
+      "faq": true,
+      "patterns": [
+        "what is CEN 581 project seminar",
+        "what happens in the project seminar course",
+        "how does the seminar course work"
+      ],
+      "responses": [
+        "CEN 581: Project Seminar (2 units, Year 5 First Semester) is designed to let students and staff discuss project, research, and industrial topics. In the process, students learn how to present ideas and write a technical report."
+      ]
+    },
+    {
+      "tag": "freshers_orientation",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Events & Activities",
+      "faq": true,
+      "patterns": [
+        "when is freshers orientation",
+        "what happens at orientation",
+        "orientation schedule",
+        "when is fresher orientation"
+      ],
+      "responses": [
+        "Fresher's Orientation Day One is Monday, 2nd February 2026: Fresher's Orientation at 12:00 PM, followed by a Worship Experience at 2:00 PM, both at CIBN Hall (behind the basketball court)."
+      ]
+    },
+    {
+      "tag": "aces_week",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Events & Activities",
+      "faq": true,
+      "patterns": [
+        "what is ACES week",
+        "when is aces week",
+        "aces week schedule",
+        "what is aces"
+      ],
+      "responses": [
+        "ACES Week 2026, organized by the Association of Computer Engineering Students (ACES), runs Monday 2nd to Friday 6th February 2026 under the theme 'Emergence'. Schedule: Monday - Movie Night, Tuesday - Tech Workshop, Wednesday - Game Fest, Thursday - Next Gen ACES, Friday - Dinner/Award Night. Follow @aces_rsu for updates, hashtags #ACESWeek2026 #Emergence #RSUACES #TechAndVibes."
+      ]
+    },
+    {
+      "tag": "digital_privacy_campaign",
+      "department": "Computer Engineering",
+      "level": "all",
+      "category": "Events & Activities",
+      "faq": true,
+      "patterns": [
+        "what is DPAC",
+        "digital privacy awareness campaign",
+        "when is the privacy campaign",
+        "how do I register for DPAC"
+      ],
+      "responses": [
+        "The Digital Privacy Awareness Campaign (DPAC) is on Friday, 24th July 2026. It covers protecting personal information, staying safe online, understanding digital rights, managing your digital footprint, and avoiding scams and identity theft. Participants are also onboarded into the free Virtual Privacy Academy (VPA) data privacy certification programme, with giveaways, refreshments, and networking opportunities. Register at https://forms.cloud.microsoft/r/ea53dzMqV1."
+      ]
+    },
+    {
       "tag": "departmental_dues",
       "department": "Computer Engineering",
       "level": "all",
