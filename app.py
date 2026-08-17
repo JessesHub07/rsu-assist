@@ -1,16 +1,20 @@
 import base64
 import json
 import os
+import secrets
 import uuid
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
+from functools import wraps
 
 import pdfplumber
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, session, url_for
+from werkzeug.security import check_password_hash, generate_password_hash
 
 load_dotenv()
 
+from email_service import send_otp_email  # noqa: E402
 from llm import generate_reply  # noqa: E402  (must run after load_dotenv)
 from rag import KB_PATH, get_store, is_visible  # noqa: E402
 from storage import (  # noqa: E402
@@ -20,11 +24,15 @@ from storage import (  # noqa: E402
     activate_student,
     add_bookmark,
     authenticate_student,
+    bump_session_version,
     change_password,
     compute_level,
+    consume_password_reset,
+    create_password_reset,
     create_project,
     delete_bookmark,
     delete_project,
+    get_active_password_reset,
     get_bookmarks_for_user,
     get_documents_for_project,
     get_documents_for_user,
@@ -35,10 +43,12 @@ from storage import (  # noqa: E402
     get_session_messages,
     get_sessions_for_project,
     get_sessions_for_user,
+    get_student_by_matric,
     get_user,
     init_db,
     save_document,
     save_message,
+    set_password,
     update_profile,
     update_project,
 )
@@ -89,9 +99,44 @@ def current_user():
     if not user:
         session.clear()
         return None
+    # A mismatch means this account's sessions were invalidated (password
+    # reset, or "sign out of all other devices") after this cookie was
+    # issued, so treat it the same as never having logged in.
+    if session.get("session_version") != user.get("session_version", 0):
+        session.clear()
+        return None
     if user["user_type"] == "student":
         user["level"] = compute_level(user["admission_year"], user["level_override"])
     return user
+
+
+def student_page_required(view):
+    """For -ui page routes: Home, My Documents, Projects, and Bookmarks are
+    academic-life tools tied to a real student record (department, level,
+    matric number), so they don't make sense for an anonymous guest browsing
+    via Google sign-in. Chat and FAQs stay open to everyone. A guest hitting
+    one of these directly by URL is bounced to chat rather than shown an error,
+    since they're still welcome on the parts of the app that are for them."""
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        user = current_user()
+        if not user or user.get("user_type") != "student":
+            return redirect("/chat-ui")
+        return view(*args, **kwargs)
+    return wrapped
+
+
+def student_api_required(view):
+    """Same restriction as student_page_required, for the JSON endpoints
+    those pages call — hiding the nav link isn't real access control, a
+    guest could still hit these directly, so the check has to live here too."""
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        user = current_user()
+        if not user or user.get("user_type") != "student":
+            return jsonify({"error": "This feature is available to signed-in students only."}), 403
+        return view(*args, **kwargs)
+    return wrapped
 
 
 @app.route("/")
@@ -123,6 +168,7 @@ def login():
 
     session.permanent = True
     session["user_id"] = user["id"]
+    session["session_version"] = user.get("session_version", 0)
     return jsonify({"success": True, "redirect": "/chat-ui"})
 
 
@@ -148,6 +194,7 @@ def signup():
 
     session.permanent = True
     session["user_id"] = user["id"]
+    session["session_version"] = user.get("session_version", 0)
     return jsonify({"success": True, "redirect": "/chat-ui"})
 
 
@@ -175,6 +222,7 @@ def auth_google_callback():
     )
     session.permanent = True
     session["user_id"] = user["id"]
+    session["session_version"] = user.get("session_version", 0)
     return redirect("/chat-ui")
 
 
@@ -197,6 +245,7 @@ def me():
 
 
 @app.route("/home-ui")
+@student_page_required
 def home_ui():
     return render_template("home.html", active="home")
 
@@ -250,6 +299,75 @@ def change_password_route():
     return jsonify({"success": True})
 
 
+OTP_EXPIRY_MINUTES = 10
+GENERIC_FORGOT_PASSWORD_MESSAGE = (
+    "If that matric number is on record and has an email on file, "
+    "we've sent a reset code to it."
+)
+
+
+@app.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json(force=True)
+    matric_number = (data.get("matric_number") or "").strip()
+
+    user = get_student_by_matric(matric_number)
+    # Same response either way, so this endpoint can't be used to check
+    # which matric numbers exist or which accounts have an email on file.
+    if not user or not user.get("email"):
+        return jsonify({"success": True, "message": GENERIC_FORGOT_PASSWORD_MESSAGE})
+
+    otp = f"{secrets.randbelow(1000000):06d}"
+    expires_at = (datetime.now(timezone.utc) + timedelta(minutes=OTP_EXPIRY_MINUTES)).isoformat()
+    create_password_reset(user["id"], generate_password_hash(otp), expires_at)
+
+    sent, error = send_otp_email(user["email"], otp, user["full_name"])
+    if not sent:
+        # The reset row still exists, but with no way to have received the
+        # code there's nothing useful the student can do with it, so surface
+        # the real failure here rather than the generic message.
+        return jsonify({"error": error}), 502
+
+    return jsonify({"success": True, "message": GENERIC_FORGOT_PASSWORD_MESSAGE})
+
+
+@app.route("/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json(force=True)
+    matric_number = (data.get("matric_number") or "").strip()
+    otp = (data.get("otp") or "").strip()
+    new_password = data.get("new_password") or ""
+    confirm_password = data.get("confirm_password") or ""
+
+    if len(new_password) < 8:
+        return jsonify({"error": "New password must be at least 8 characters."}), 400
+    if new_password != confirm_password:
+        return jsonify({"error": "New passwords don't match."}), 400
+
+    user = get_student_by_matric(matric_number)
+    if not user:
+        return jsonify({"error": "Invalid matric number or code."}), 400
+
+    reset = get_active_password_reset(user["id"])
+    if not reset or not check_password_hash(reset["otp_hash"], otp):
+        return jsonify({"error": "Invalid matric number or code."}), 400
+
+    consume_password_reset(reset["id"])
+    set_password(user["id"], new_password)
+    bump_session_version(user["id"])  # sign the account out everywhere, including anyone who had the old password
+    return jsonify({"success": True})
+
+
+@app.route("/sign-out-everywhere", methods=["POST"])
+def sign_out_everywhere():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Sign in first."}), 401
+    new_version = bump_session_version(user["id"])
+    session["session_version"] = new_version  # keep this session valid, only the others are invalidated
+    return jsonify({"success": True})
+
+
 def _serialize_project(project):
     return {
         "id": project["id"],
@@ -263,20 +381,21 @@ def _serialize_project(project):
 
 
 @app.route("/projects-ui")
+@student_page_required
 def projects_ui():
     return render_template("projects.html", active="projects")
 
 
 @app.route("/project-ui/<int:project_id>")
+@student_page_required
 def project_ui(project_id):
     return render_template("project.html", active="projects", project_id=project_id)
 
 
 @app.route("/projects", methods=["GET", "POST"])
+@student_api_required
 def projects():
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to use projects."}), 401
 
     if request.method == "POST":
         data = request.get_json(force=True)
@@ -293,10 +412,9 @@ def projects():
 
 
 @app.route("/projects/<int:project_id>", methods=["GET", "PATCH", "DELETE"])
+@student_api_required
 def project_detail(project_id):
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to use projects."}), 401
 
     project = get_project(project_id, user["id"])
     if not project:
@@ -325,15 +443,15 @@ def project_detail(project_id):
 
 
 @app.route("/bookmarks-ui")
+@student_page_required
 def bookmarks_ui():
     return render_template("bookmarks.html", active="bookmarks")
 
 
 @app.route("/bookmarks", methods=["GET", "POST"])
+@student_api_required
 def bookmarks():
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to use bookmarks."}), 401
 
     if request.method == "POST":
         data = request.get_json(force=True)
@@ -349,10 +467,9 @@ def bookmarks():
 
 
 @app.route("/bookmarks/<int:bookmark_id>", methods=["DELETE"])
+@student_api_required
 def bookmark_detail(bookmark_id):
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to use bookmarks."}), 401
     delete_bookmark(bookmark_id, user["id"])
     return jsonify({"success": True})
 
@@ -515,23 +632,22 @@ def chat():
 
 
 @app.route("/documents-ui")
+@student_page_required
 def documents_ui():
     return render_template("documents.html", active="documents")
 
 
 @app.route("/documents")
+@student_api_required
 def documents():
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to see your documents."}), 401
     return jsonify({"documents": get_documents_for_user(user["id"])})
 
 
 @app.route("/upload", methods=["POST"])
+@student_api_required
 def upload():
     user = current_user()
-    if not user:
-        return jsonify({"error": "Sign in to upload documents."}), 401
 
     if "file" not in request.files:
         return jsonify({"error": "no file provided"}), 400

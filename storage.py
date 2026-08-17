@@ -85,9 +85,22 @@ def init_db():
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS password_resets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL REFERENCES users(id),
+            otp_hash TEXT NOT NULL,
+            expires_at TEXT NOT NULL,
+            used INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL
+        )
+        """
+    )
     conn.commit()
     _migrate_add_user_id_columns(conn)
     _migrate_add_project_id_columns(conn)
+    _migrate_add_session_version(conn)
     conn.close()
 
 
@@ -109,6 +122,17 @@ def _migrate_add_project_id_columns(conn):
         cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
         if "project_id" not in cols:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN project_id INTEGER REFERENCES projects(id)")
+    conn.commit()
+
+
+def _migrate_add_session_version(conn):
+    """Backs "sign out of all other devices": every session carries the
+    version number that was current when it was created, and current_user()
+    rejects a session whose version doesn't match the user's current one.
+    Bumping this value invalidates every session but the one that bumped it."""
+    cols = [r["name"] for r in conn.execute("PRAGMA table_info(users)").fetchall()]
+    if "session_version" not in cols:
+        conn.execute("ALTER TABLE users ADD COLUMN session_version INTEGER NOT NULL DEFAULT 0")
     conn.commit()
 
 
@@ -511,3 +535,74 @@ def delete_bookmark(bookmark_id, user_id):
     conn.execute("DELETE FROM bookmarks WHERE id = ? AND user_id = ?", (bookmark_id, user_id))
     conn.commit()
     conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Password reset (OTP emailed to the student's on-file address)
+# ---------------------------------------------------------------------------
+
+def get_student_by_matric(matric_number):
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT * FROM users WHERE user_type = 'student' AND matric_number = ?", (matric_number,)
+    ).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def create_password_reset(user_id, otp_hash, expires_at):
+    conn = get_conn()
+    conn.execute(
+        "INSERT INTO password_resets (user_id, otp_hash, expires_at, created_at) VALUES (?, ?, ?, ?)",
+        (user_id, otp_hash, expires_at, _now()),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_active_password_reset(user_id):
+    """The most recent unused, unexpired reset request for this user, if any."""
+    conn = get_conn()
+    row = conn.execute(
+        """
+        SELECT * FROM password_resets
+        WHERE user_id = ? AND used = 0 AND expires_at > ?
+        ORDER BY id DESC LIMIT 1
+        """,
+        (user_id, _now()),
+    ).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def consume_password_reset(reset_id):
+    conn = get_conn()
+    conn.execute("UPDATE password_resets SET used = 1 WHERE id = ?", (reset_id,))
+    conn.commit()
+    conn.close()
+
+
+def set_password(user_id, new_password):
+    conn = get_conn()
+    conn.execute(
+        "UPDATE users SET password_hash = ? WHERE id = ?",
+        (generate_password_hash(new_password), user_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Sessions ("sign out of all other devices")
+# ---------------------------------------------------------------------------
+
+def bump_session_version(user_id):
+    """Invalidates every session for this user except the one that calls
+    this and then updates its own stored version to match, see
+    _migrate_add_session_version for how this is enforced."""
+    conn = get_conn()
+    conn.execute("UPDATE users SET session_version = session_version + 1 WHERE id = ?", (user_id,))
+    conn.commit()
+    row = conn.execute("SELECT session_version FROM users WHERE id = ?", (user_id,)).fetchone()
+    conn.close()
+    return row["session_version"]

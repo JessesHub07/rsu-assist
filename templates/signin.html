@@ -44,7 +44,7 @@
       <button id="themeToggle" class="theme-toggle" type="button">Dark Mode</button>
 
       <div class="form-card">
-        <div class="tab-pills" role="tablist">
+        <div class="tab-pills" role="tablist" id="tabPills">
           <button type="button" class="tab-btn active" id="tabSignin" role="tab" aria-selected="true">Sign in</button>
           <button type="button" class="tab-btn" id="tabSignup" role="tab" aria-selected="false">Sign up</button>
         </div>
@@ -68,9 +68,42 @@
             </div>
           </label>
           <div class="form-row">
-            <a href="#" class="forgot-link">Forgot password?</a>
+            <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
           </div>
           <button type="submit" class="submit-btn" id="signinSubmit">Sign in</button>
+        </form>
+
+        <form id="forgotForm" hidden>
+          <p class="field-hint">Enter your matric number and we'll email a reset code to the address your department has on file.</p>
+          <label class="field">
+            <span>Matric number</span>
+            <input type="text" id="forgotMatric" placeholder="De.2022/1234" autocomplete="username">
+          </label>
+
+          <div id="forgotOtpFields" hidden>
+            <label class="field">
+              <span>Reset code</span>
+              <input type="text" id="forgotOtp" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric" maxlength="6">
+            </label>
+            <label class="field password-field">
+              <span>New password</span>
+              <div class="password-wrap">
+                <input type="password" id="forgotNewPassword" placeholder="At least 8 characters" autocomplete="new-password">
+                <button type="button" class="toggle-password" data-target="forgotNewPassword" aria-label="Show password"></button>
+              </div>
+            </label>
+            <label class="field password-field">
+              <span>Confirm new password</span>
+              <div class="password-wrap">
+                <input type="password" id="forgotConfirmPassword" placeholder="Re-enter new password" autocomplete="new-password">
+                <button type="button" class="toggle-password" data-target="forgotConfirmPassword" aria-label="Show password"></button>
+              </div>
+            </label>
+          </div>
+
+          <p class="field-hint forgot-status" id="forgotStatus" hidden></p>
+          <button type="submit" class="submit-btn" id="forgotSubmit">Send reset code</button>
+          <p class="switch-line"><a href="#" id="backToSigninLink">Back to sign in</a></p>
         </form>
 
         <form id="signupForm" hidden>
@@ -100,7 +133,7 @@
           <button type="submit" class="submit-btn" id="signupSubmit">Sign up</button>
         </form>
 
-        <p class="switch-line">
+        <p class="switch-line" id="mainSwitchLine">
           <span id="switchPrompt">Don't have an account?</span> <a href="#" id="switchLink">Sign up</a>
         </p>
 

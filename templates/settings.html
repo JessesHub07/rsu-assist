@@ -36,7 +36,7 @@
             <button type="button" class="settings-subnav-item" data-panel="chat">Chat</button>
             <button type="button" class="settings-subnav-item" data-panel="documents">Documents</button>
             <button type="button" class="settings-subnav-item" data-panel="bookmarks">Bookmarks</button>
-            <button type="button" class="settings-subnav-item settings-subnav-soon" data-label="Security">Security</button>
+            <button type="button" class="settings-subnav-item" data-panel="security">Security</button>
           </nav>
 
           <div class="settings-panels">
@@ -182,6 +182,25 @@
                   <div class="settings-stat-label">answers saved</div>
                 </div>
                 <a href="/bookmarks-ui" class="settings-save-btn settings-link-btn">View bookmarks</a>
+              </div>
+            </section>
+
+            <section class="settings-panel" id="panel-security" hidden>
+              <div class="settings-section">
+                <h2>Password recovery</h2>
+                <p class="settings-section-desc">If you ever forget your password, a reset code is emailed to the address your department has on file for you.</p>
+                <div class="settings-stat-row">
+                  <div class="settings-stat-value settings-stat-value-sm" id="settingsRecoveryEmail">-</div>
+                  <div class="settings-stat-label">recovery email on file</div>
+                </div>
+                <p class="settings-section-desc" id="settingsNoRecoveryEmail" hidden>Your department hasn't recorded an email for your account yet — contact them to have one added, so password recovery works if you ever need it.</p>
+              </div>
+
+              <div class="settings-section">
+                <h2>Active sessions</h2>
+                <p class="settings-section-desc">If you signed in on a device that isn't yours, or think someone else has access, sign out everywhere else at once. This device stays signed in.</p>
+                <p class="settings-save-status" id="signOutEverywhereStatus"></p>
+                <button type="button" class="settings-save-btn" id="signOutEverywhereBtn">Sign out of all other devices</button>
               </div>
             </section>
 

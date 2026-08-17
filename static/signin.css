@@ -261,6 +261,12 @@ html[data-theme="dark"] .field { color: var(--text-dark); }
 
 html[data-theme="dark"] .field-hint { color: var(--subtext-dark); }
 
+.forgot-status {
+  margin: 4px 0 0;
+  color: var(--green);
+  font-weight: 500;
+}
+
 .field input {
   border: 1px solid var(--border-light);
   border-radius: 10px;

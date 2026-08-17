@@ -16,7 +16,7 @@
   </button>
 
   <nav class="sidebar-nav">
-    <a href="/home-ui" class="nav-item {{ 'active' if active == 'home' else '' }}">Home</a>
+    <a href="/home-ui" class="nav-item {{ 'active' if active == 'home' else '' }}" data-student-only>Home</a>
     <a href="/chat-ui" class="nav-item {{ 'active' if active == 'chat' else '' }}">Chat</a>
 
     <button type="button" class="nav-item nav-expandable" id="historyToggle">
@@ -28,9 +28,9 @@
       <div id="historyList"></div>
     </div>
 
-    <a href="/projects-ui" class="nav-item {{ 'active' if active == 'projects' else '' }}">Projects</a>
-    <a href="/documents-ui" class="nav-item {{ 'active' if active == 'documents' else '' }}">My Documents</a>
-    <a href="/bookmarks-ui" class="nav-item {{ 'active' if active == 'bookmarks' else '' }}">Bookmarks</a>
+    <a href="/projects-ui" class="nav-item {{ 'active' if active == 'projects' else '' }}" data-student-only>Projects</a>
+    <a href="/documents-ui" class="nav-item {{ 'active' if active == 'documents' else '' }}" data-student-only>My Documents</a>
+    <a href="/bookmarks-ui" class="nav-item {{ 'active' if active == 'bookmarks' else '' }}" data-student-only>Bookmarks</a>
     <a href="/faqs-ui" class="nav-item {{ 'active' if active == 'faqs' else '' }}">FAQs</a>
     <a href="/settings-ui" class="nav-item {{ 'active' if active == 'settings' else '' }}">Settings</a>
   </nav>

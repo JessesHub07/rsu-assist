@@ -112,6 +112,10 @@ html[data-theme="dark"] body { background: var(--bg-dark); }
   white-space: nowrap;
 }
 
+.nav-item[hidden] {
+  display: none;
+}
+
 .nav-item {
   display: flex;
   align-items: center;

@@ -222,6 +222,54 @@ async function loadBookmarksStat() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Security
+// ---------------------------------------------------------------------------
+
+function maskEmail(email) {
+  const [name, domain] = email.split("@");
+  if (!domain) return email;
+  const visible = name.slice(0, 2);
+  return `${visible}${"*".repeat(Math.max(name.length - 2, 3))}@${domain}`;
+}
+
+async function loadSecurityPanel() {
+  try {
+    const res = await fetch("/me");
+    const data = await res.json();
+    const email = data.user && data.user.email;
+    const emailEl = document.getElementById("settingsRecoveryEmail");
+    const noEmailEl = document.getElementById("settingsNoRecoveryEmail");
+    if (email) {
+      emailEl.textContent = maskEmail(email);
+    } else {
+      emailEl.textContent = "None on file";
+      noEmailEl.hidden = false;
+    }
+  } catch (err) {
+    // Leave the placeholder "-" if this fails, not critical to the page.
+  }
+}
+
+const signOutEverywhereBtn = document.getElementById("signOutEverywhereBtn");
+const signOutEverywhereStatus = document.getElementById("signOutEverywhereStatus");
+
+signOutEverywhereBtn.addEventListener("click", async () => {
+  signOutEverywhereBtn.disabled = true;
+  signOutEverywhereStatus.textContent = "Signing out other devices...";
+  try {
+    const res = await fetch("/sign-out-everywhere", { method: "POST" });
+    const data = await res.json();
+    signOutEverywhereStatus.textContent = res.ok
+      ? "Done. Every other device has been signed out."
+      : (data.error || "Couldn't do that right now.");
+  } catch (err) {
+    signOutEverywhereStatus.textContent = "Couldn't reach the server.";
+  }
+  signOutEverywhereBtn.disabled = false;
+});
+
 initAccountSection();
 loadDocumentsStat();
 loadBookmarksStat();
+loadSecurityPanel();

@@ -267,6 +267,11 @@ html[data-theme="dark"] .settings-stat-row { border-color: var(--border-dark); }
   color: var(--green);
 }
 
+.settings-stat-value-sm {
+  font-size: 15px;
+  word-break: break-all;
+}
+
 .settings-stat-label {
   font-size: 12px;
   color: var(--subtext-light);

@@ -90,6 +90,17 @@ function initialsFromDept(dept) {
   return dept.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 3);
 }
 
+// Home, Projects, My Documents, and Bookmarks are tied to a real student
+// record and don't apply to a guest browsing via Google sign-in (or to
+// nobody signed in at all) — the routes themselves already enforce this
+// server-side, this just keeps a guest from seeing a link that would only
+// bounce them back to chat.
+function applyStudentOnlyNav(isStudent) {
+  document.querySelectorAll("[data-student-only]").forEach((el) => {
+    el.hidden = !isStudent;
+  });
+}
+
 async function loadSidebarUser() {
   const sidebarDept = document.getElementById("sidebarDept");
   const footer = document.getElementById("sidebarFooter");
@@ -97,6 +108,8 @@ async function loadSidebarUser() {
   try {
     const res = await fetch("/me");
     const data = await res.json();
+
+    applyStudentOnlyNav(data.user && data.user.user_type === "student");
 
     if (data.user) {
       document.getElementById("userAvatar").textContent = initials(data.user.full_name);
