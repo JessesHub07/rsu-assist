@@ -139,6 +139,40 @@ def student_api_required(view):
     return wrapped
 
 
+GUEST_MESSAGE_LIMIT = 15
+GUEST_MESSAGE_WINDOW_HOURS = 24
+
+
+def check_guest_message_limit():
+    """Chat is deliberately open to guests and anonymous visitors (unlike
+    Home/Documents/Projects/Bookmarks), but every message costs a real
+    Claude API call regardless of who's asking, so it still needs a cap.
+    Tracked in the visitor's own session cookie rather than a server-side
+    table — no account needed for it to apply, and it resets if they start
+    a genuinely fresh session. That's a soft cost control, not an
+    airtight per-person limit, which is the right tradeoff for a feature
+    meant to stay frictionless for a casual visitor.
+
+    Returns an error message if the visitor is over the limit, else None
+    (and records this message against their count as a side effect)."""
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(hours=GUEST_MESSAGE_WINDOW_HOURS)
+    timestamps = [
+        t for t in session.get("guest_message_times", [])
+        if datetime.fromisoformat(t) > cutoff
+    ]
+    if len(timestamps) >= GUEST_MESSAGE_LIMIT:
+        session["guest_message_times"] = timestamps
+        return (
+            f"You've reached today's guest limit of {GUEST_MESSAGE_LIMIT} messages. "
+            f"Sign in as a student for unlimited access, or come back tomorrow."
+        )
+    timestamps.append(now.isoformat())
+    session["guest_message_times"] = timestamps
+    session.modified = True
+    return None
+
+
 @app.route("/")
 def signin():
     return render_template("signin.html")
@@ -603,6 +637,11 @@ def chat():
     user_id = user["id"] if user else None
     department = user.get("department") if user else None
     level = user.get("level") if user else None
+
+    if not user or user.get("user_type") != "student":
+        limit_message = check_guest_message_limit()
+        if limit_message:
+            return jsonify({"error": limit_message}), 429
 
     project_id = request.form.get("project_id", type=int)
     project = None
